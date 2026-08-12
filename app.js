@@ -10,8 +10,8 @@ const MongoStorePkg = require('connect-mongo');
 const MongoStore = MongoStorePkg && MongoStorePkg.default ? MongoStorePkg.default : MongoStorePkg;
 const mongoose = require("mongoose");
 
-const DB_PATH = process.env.MONGODB_URI ||
-  "mongodb://dakshchaudhary10009_db_user:dakshmongo12@ac-gbtc40v-shard-00-00.ekdpera.mongodb.net:27017,ac-gbtc40v-shard-00-01.ekdpera.mongodb.net:27017,ac-gbtc40v-shard-00-02.ekdpera.mongodb.net:27017/airbnb?ssl=true&replicaSet=atlas-e33bjd-shard-0&authSource=admin&appName=Daksh";
+// 🔐 SECURITY FIX: Hardcoded password removed. Now it strictly uses .env
+const DB_PATH = process.env.MONGODB_URI;
 
 const storeRouter = require("./routes/storeRouter");
 const hostRouter = require("./routes/hostRouter");
