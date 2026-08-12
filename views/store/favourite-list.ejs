@@ -1,0 +1,57 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main class="page-shell container mx-auto py-10">
+  <div class="list-heading">
+    <div>
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Your collection</p>
+      <h1 class="section-title">Saved favourites</h1>
+      <p class="section-subtitle">Quick access to the homes you love.</p>
+    </div>
+  </div>
+
+  <% if (favouriteHomes && favouriteHomes.length > 0) { %>
+    <div class="card-grid mt-8">
+      <% favouriteHomes.forEach(home => { %>
+        <article class="property-card">
+          <div class="card-image-wrap">
+              <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
+          </div>
+          <div class="card-content">
+            <!-- BOOKING STATUS LOGIC ADDED HERE -->
+            <div class="mb-3">
+              <% if (home.isBooked) { %>
+                <span class="text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded">🚨 Booked</span>
+              <% } else { %>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">✅ Not Booked yet</span>
+              <% } %>
+            </div>
+            <!-- END LOGIC -->
+
+            <p class="badge-pill"><%= home.location %></p>
+            <h3 class="card-title"><%= home.houseName %></h3>
+            <div class="card-meta">
+              <span><i class="fas fa-star text-amber-400"></i> <%= home.rating %></span>
+              <span>Rs <strong><%= home.price %></strong> / night</span>
+            </div>
+            <div class="property-actions">
+              <a class="btn-secondary" href="/homes/<%= home._id %>">View</a>
+              <form action="/favourites/delete/<%= home._id %>" method="POST">
+                <button type="submit" class="btn-danger">Remove</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty-state mt-8">
+      <h2>Your favourite stays will appear here.</h2>
+      <p>Add homes to your favourites and keep them ready for planning.</p>
+      <a href="/homes" class="btn-primary mt-4 inline-flex justify-center">Explore Homes</a>
+    </div>
+  <% } %>
+</main>
+
+</body>
+</html>

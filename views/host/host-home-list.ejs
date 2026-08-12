@@ -1,0 +1,62 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main class="page-shell container mx-auto py-10">
+  <div class="list-heading">
+    <div>
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Host dashboard</p>
+      <h1 class="section-title">Your listed homes</h1>
+      <p class="section-subtitle">Manage your properties, bookings, and smart listings from one place.</p>
+    </div>
+    <a href="/host/add-home" class="btn-primary">Add Home</a>
+  </div>
+
+  <% if (registeredHomes.length > 0) { %>
+    <section class="mt-8 grid gap-8">
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="property-card bg-slate-50 dark:bg-slate-900 p-6">
+          <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Total properties</p>
+          <h2 class="mt-3 text-4xl font-extrabold"><%= registeredHomes.length %></h2>
+        </div>
+        <div class="property-card bg-slate-50 dark:bg-slate-900 p-6">
+          <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Total bookings</p>
+          <h2 class="mt-3 text-4xl font-extrabold">0</h2>
+          <p class="mt-2 text-slate-500 dark:text-slate-400">Booking data is available when reservations are created.</p>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        <% registeredHomes.forEach(home => { %>
+          <article class="property-card">
+            <div class="card-image-wrap">
+              <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
+            </div>
+            <div class="card-content">
+              <p class="badge-pill"><%= home.location %></p>
+              <h3 class="card-title"><%= home.houseName %></h3>
+              <div class="card-meta">
+                <span><i class="fas fa-star text-amber-400"></i> <%= home.rating %></span>
+                <span>Rs <strong><%= home.price %></strong> / night</span>
+              </div>
+              <div class="property-actions">
+                <a class="btn-secondary" href="/host/edit-home/<%= home._id %>?editing=true">Edit</a>
+                <form action="/host/delete-home/<%= home._id %>" method="POST">
+                  <button type="submit" class="btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    </section>
+  <% } else { %>
+    <div class="empty-state mt-8">
+      <h2>You haven't listed a property yet.</h2>
+      <p>Create a beautiful listing and welcome your first guests with a premium property presentation.</p>
+      <a href="/host/add-home" class="btn-primary mt-4 inline-flex justify-center">Add your first home</a>
+    </div>
+  <% } %>
+</main>
+
+</body>
+</html>

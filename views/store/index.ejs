@@ -1,0 +1,129 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main class="page-shell container mx-auto py-10">
+  <section class="hero-panel">
+    <div class="hero-copy">
+      <p class="eyebrow">Premium stays</p>
+      <h1 class="hero-title">Find your perfect stay</h1>
+      <p class="hero-text">Discover premium homes, private stays, and unforgettable experiences with a modern booking experience designed for guests and hosts.</p>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-value"><%= registeredHomes.length %>+</span>
+          <span class="stat-label">Premium homes</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">24/7</span>
+          <span class="stat-label">Support</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">Trusted</span>
+          <span class="stat-label">by travellers</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="hero-card">
+      <div class="hero-card-header">
+        <p class="text-sm uppercase tracking-[0.25em] text-slate-500">Search stays</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Start your journey</h2>
+      </div>
+
+      <form action="/homes" method="GET" class="search-row">
+        <label class="search-field">
+          <span>Destination</span>
+          <div class="input-surface">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" name="destination" placeholder="Kuala Lumpur" aria-label="Destination" />
+          </div>
+        </label>
+
+        <label class="search-field">
+          <span>Check-in</span>
+          <div class="input-surface">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="text" name="checkin" placeholder="18 Aug 2026" aria-label="Check-in date" />
+          </div>
+        </label>
+
+        <label class="search-field">
+          <span>Check-out</span>
+          <div class="input-surface">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="text" name="checkout" placeholder="19 Aug 2026" aria-label="Check-out date" />
+          </div>
+        </label>
+
+        <label class="search-field">
+          <span>Guests</span>
+          <div class="input-surface">
+            <i class="fas fa-user-friends"></i>
+            <input type="text" name="guests" placeholder="1 adult, 1 room" aria-label="Guests and rooms" />
+          </div>
+        </label>
+
+        <button type="submit" class="btn-primary search-action">SEARCH</button>
+      </form>
+    </aside>
+  </section>
+
+  <section class="list-heading mt-8">
+    <div>
+      <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Curated selection</p>
+      <h2 class="section-title">Explore premium homes</h2>
+      <p class="section-subtitle">A beautifully refined home for every travel style.</p>
+    </div>
+    <span class="badge"><%= registeredHomes.length %> homes</span>
+  </section>
+
+  <% if (registeredHomes.length > 0) { %>
+    <div class="card-grid mt-8">
+      <% registeredHomes.forEach(home => { %>
+        <article class="property-card">
+          <div class="card-image-wrap">
+            <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
+          </div>
+          <div class="card-content">
+            <!-- BOOKING STATUS LOGIC ADDED HERE -->
+            <div class="mb-3">
+              <% if (home.isBooked) { %>
+                <span class="text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded">🚨 Booked</span>
+              <% } else { %>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">✅ Not Booked yet</span>
+              <% } %>
+            </div>
+            <!-- END LOGIC -->
+
+            <p class="badge-pill"><%= home.location %></p>
+            <h3 class="card-title"><%= home.houseName %></h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4"><%= home.description || 'Modern stay with thoughtfully curated amenities and elegant comfort.' %></p>
+            <div class="card-meta">
+              <span><i class="fas fa-star text-amber-400"></i> <%= home.rating %></span>
+              <span>Rs <strong><%= home.price %></strong> / night</span>
+            </div>
+            <div class="property-actions">
+              <a class="btn-secondary " href="/homes/<%= home._id %>">View details</a>
+              <% if (isLoggedIn && user && user.userType === 'guest') { %>
+                <form action="/favourites" method="POST">
+                  <input type="hidden" name="id" value="<%= home._id %>" />
+                  <button type="submit" class="heart-button" aria-label="Save to favourites">
+                    <span><i class="fas fa-heart heart-icon"></i> Save</span>
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty-state mt-8">
+      <h2>No homes available yet</h2>
+      <p>Our inventory is being refreshed. Check back soon for premium stays and new listings.</p>
+      <a href="/host/add-home" class="btn-primary mt-4 inline-flex justify-center">List a home</a>
+    </div>
+  <% } %>
+</main>
+
+</body>
+</html>

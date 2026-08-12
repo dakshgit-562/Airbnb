@@ -1,0 +1,72 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+
+<main class="page-shell container mx-auto py-10">
+  <div class="list-heading">
+    <div>
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Booking dashboard</p>
+      <h1 class="section-title">My bookings</h1>
+      <p class="section-subtitle">Track your upcoming stays and reservation details.</p>
+    </div>
+  </div>
+
+  <% if (bookings && bookings.length > 0) { %>
+    <section class="mt-8 space-y-6">
+      <% bookings.forEach((booking) => { %>
+        <article class="card p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Property</span>
+              <p class="mt-2 font-semibold"><%= booking.home?.houseName || 'Unknown property' %></p>
+            </div>
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-in</span>
+              <p class="mt-2"><%= booking.checkIn.toDateString() %></p>
+            </div>
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-out</span>
+              <p class="mt-2"><%= booking.checkOut.toDateString() %></p>
+            </div>
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Status</span>
+              <span class="badge <%= booking.status === 'cancelled' ? 'badge-error' : 'badge' %>"><%= booking.status %></span>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-3">
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Nights</span>
+              <p class="mt-2"><%= booking.numberOfNights %></p>
+            </div>
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Price / night</span>
+              <p class="mt-2">Rs <%= booking.pricePerNight %></p>
+            </div>
+            <div>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Total price</span>
+              <p class="mt-2 font-semibold">Rs <%= booking.totalPrice %></p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-slate-500">Booked on <strong><%= booking.createdAt.toDateString() %></strong></p>
+            <% if (booking.status !== 'cancelled') { %>
+              <form action="/bookings/cancel/<%= booking._id %>" method="POST">
+                <button type="submit" class="btn-danger">Cancel booking</button>
+              </form>
+            <% } %>
+          </div>
+        </article>
+      <% }) %>
+    </section>
+  <% } else { %>
+    <div class="empty-state mt-8">
+      <h2>You haven't made any bookings yet.</h2>
+      <p>When you book a stay, your trip details will appear here with easy access to your itinerary.</p>
+      <a href="/homes" class="btn-primary mt-4 inline-flex justify-center">Browse homes</a>
+    </div>
+  <% } %>
+</main>
+
+</body>
+</html>

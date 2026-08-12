@@ -1,0 +1,99 @@
+<header class="sticky top-0 z-40">
+  <nav class="navbar">
+    <a href="/" class="nav-brand">
+      <span class="brand-mark">N</span>
+      <div>
+        <span class="block text-xs uppercase tracking-[0.35em] text-slate-500">NestStay</span>
+        <span class="block text-lg font-black" id="loop-text">Premium Stays</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <a href="/" class="<%= currentPage === 'index' || currentPage === 'Home' ? 'nav-link active' : 'nav-link' %>">Home</a>
+      <% if (isLoggedIn && user) { %>
+        <% if (user.userType === 'host') { %>
+          <a href="/host/host-home-list" class="<%= currentPage === 'host-homes' ? 'nav-link active' : 'nav-link' %>">Host Dashboard</a>
+          <a href="/host/add-home" class="<%= currentPage === 'addHome' ? 'nav-link active' : 'nav-link' %>">Add Home</a>
+          <a href="/host/bookings" class="<%= currentPage === 'host-bookings' ? 'nav-link active' : 'nav-link' %>">Host Bookings</a>
+        <% } %>
+        <% if (user.userType === 'guest') { %>
+          <a href="/favourites" class="<%= currentPage === 'favourites' ? 'nav-link active' : 'nav-link' %>">Favourites</a>
+          <a href="/bookings" class="<%= currentPage === 'bookings' ? 'nav-link active' : 'nav-link' %>">Bookings</a>
+        <% } %>
+        
+        <!-- Yahan Manage Hosts ka link sirf aapke liye add kiya hai -->
+        <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
+          <a href="/admin/manage-hosts" class="<%= currentPage === 'manage-hosts' ? 'nav-link active' : 'nav-link' %>">Manage Hosts</a>
+        <% } %>
+      <% } %>
+    </div>
+
+    <div class="nav-actions">
+      <button class="theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:inline"></i>
+      </button>
+
+      <% if (!isLoggedIn) { %>
+        <a href="/signup" class="nav-button secondary">Sign Up</a>
+        <a href="/login" class="nav-button primary">Login</a>
+      <% } else { %>
+        <span class="hidden md:inline-flex text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
+        <form action="/logout" method="POST" class="inline">
+          <button type="submit" class="nav-button secondary">Logout</button>
+        </form>
+      <% } %>
+
+      <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" data-mobile-menu>
+    <a href="/" class="nav-link">Home</a>
+      <% if (isLoggedIn && user) { %>
+      <% if (user.userType === 'host') { %>
+        <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
+        <a href="/host/add-home" class="nav-link">Add Home</a>
+        <a href="/host/bookings" class="nav-link">Host Bookings</a>
+      <% } %>
+      <% if (user.userType === 'guest') { %>
+        <a href="/favourites" class="nav-link">Favourites</a>
+        <a href="/bookings" class="nav-link">Bookings</a>
+      <% } %>
+      <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
+        <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
+      <% } %>
+      <form action="/logout" method="POST">
+        <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
+      </form>
+    <% } else { %>
+      <a href="/signup" class="nav-button secondary w-full">Sign Up</a>
+      <a href="/login" class="nav-button primary w-full">Login</a>
+    <% } %>
+  </div>
+</header>
+
+<div class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const texts = ["Premium Stays", "Luxury Villas", "Best Getaways", "Cozy Homes"];
+    let index = 0;
+    const targetElement = document.getElementById("loop-text");
+
+    if (targetElement) {
+      setInterval(() => {
+        index = (index + 1) % texts.length;
+        targetElement.style.opacity = 0;
+        setTimeout(() => {
+          targetElement.textContent = texts[index];
+          targetElement.style.opacity = 1;
+        }, 250);
+      }, 2500);
+      
+      targetElement.style.transition = "opacity 0.25s ease-in-out";
+    }
+  });
+</script>

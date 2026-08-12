@@ -1,0 +1,12 @@
+const express = require('express');
+const app = express();
+console.log('keys', Object.keys(app));
+console.log('has _router', app._router !== undefined);
+console.log('has router', app.router !== undefined);
+console.log('router type', typeof app._router, typeof app.router);
+app.get('/test', (req, res) => res.send('ok'));
+console.log('after keys', Object.keys(app));
+console.log('after has _router', app._router !== undefined);
+console.log('after has router', app.router !== undefined);
+console.log('app._router', app._router);
+console.log('app.router', app.router);
