@@ -2,22 +2,30 @@ const express = require("express");
 const hostRouter = express.Router();
 const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
-const multer = require("multer");
 
-// Multer Setup
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images"); 
+// Cloudinary aur Multer ke naye packages
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+// Cloudinary Setup (Asli keys .env aur Vercel se aayengi)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "airbnb_homes", // Cloudinary mein is folder ke andar photo save hongi
+    allowedFormats: ["jpeg", "png", "jpg", "webp"],
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + "-" + file.originalname);
-  }
 });
 
 const upload = multer({ storage: storage });
 
-// Routes (Yahan dhyan dein: upload.single controller se theek pehle laga hai)
+// Routes (Yahan koi syntax change nahi kiya gaya hai)
 hostRouter.get("/add-home", hostController.getAddHome);
 
 // FIX: Yahan multer form aur controller ke beech mein data parse karega
@@ -35,4 +43,4 @@ hostRouter.post("/edit-home", upload.single("image"), hostController.postEditHom
 
 hostRouter.post("/delete-home/:homeId", hostController.postDeleteHome);
 
-module.exports = hostRouter;
+module.exports = hostRouter;7
