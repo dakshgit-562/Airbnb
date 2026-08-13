@@ -1,46 +1,55 @@
 :root {
   color-scheme: light;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-muted: #f8fafc;
-  --surface-strong: #e2e8f0;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --card-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
-  --card-shadow-hover: 0 24px 65px rgba(15, 23, 42, 0.14);
-  --accent: #FF6B6B;
-  --accent-strong: #ff4f5f;
-  --accent-soft: rgba(255, 107, 107, 0.12);
-  --accent-foreground: #ffffff;
-  --success: #16a34a;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  
+  /* ✨ Light Mode: Soft Premium Pearl */
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --surface-muted: #F3F4F6;
+  --surface-strong: #E5E7EB;
+  --text: #111827;
+  --muted: #6B7280;
+  --border: #E5E7EB;
+  --card-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: 0 20px 50px -10px rgba(0, 0, 0, 0.12);
+  
+  /* 🔴 Premium Accent (Airbnb Red) */
+  --accent: #FF385C; 
+  --accent-strong: #E31C5F;
+  --accent-soft: rgba(255, 56, 92, 0.1);
+  --accent-foreground: #FFFFFF;
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
   --radius: 1rem;
   --transition: 240ms ease;
 }
 
 .dark {
   color-scheme: dark;
-  --bg: #0f172a;
-  --surface: #172033;
-  --surface-muted: #1f2a45;
-  --surface-strong: #172033;
-  --text: #f8fafc;
-  --muted: #94a3b8;
-  --border: rgba(255,255,255,0.08);
-  --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
-  --card-shadow-hover: 0 24px 70px rgba(0, 0, 0, 0.55);
-  --accent: #FF6B6B;
-  --accent-strong: #ff4f5f;
-  --accent-soft: rgba(255, 107, 107, 0.12);
-  --accent-foreground: #ffffff;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #fca5a5;
+  
+  /* ✨ Dark Mode: Deep Sleek Midnight/Zinc */
+  --bg: #09090B;
+  --surface: #18181B;
+  --surface-muted: #27272A;
+  --surface-strong: #3F3F46;
+  --text: #FAFAFA;
+  --muted: #A1A1AA;
+  --border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --card-shadow-hover: 0 24px 70px rgba(0, 0, 0, 0.7);
+  
+  /* 🔴 Dark Mode Accent */
+  --accent: #FF385C;
+  --accent-strong: #FF5A79;
+  --accent-soft: rgba(255, 56, 92, 0.15);
+  --accent-foreground: #FFFFFF;
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #F87171;
 }
-
 html {
   scroll-behavior: smooth;
 }
@@ -95,14 +104,17 @@ img {
 }
 
 header {
-  backdrop-filter: blur(18px);
-  background: rgba(255, 255, 255, 0.92);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  /* ✨ Light Mode Navbar: Crisp White with Blur */
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .dark header {
-  background: rgba(23, 32, 51, 0.95);
-  border-color: rgba(255, 255, 255, 0.08);
+  /* ✨ Dark Mode Navbar: Translucent Midnight */
+  background: rgba(9, 9, 11, 0.85);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .navbar {
@@ -184,7 +196,21 @@ header {
   align-items: center;
   gap: 0.75rem;
 }
+/* Theme Toggle Icon Sizes & Logic */
+.theme-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform var(--transition);
+}
 
+/* Jab Dark mode active ho, tab Moon ko chhupao aur Sun ko dikhao */
+.dark .theme-toggle .moon-icon {
+  display: none;
+}
+
+.dark .theme-toggle .sun-icon {
+  display: block !important;
+}
 .theme-toggle {
   width: 3rem;
   height: 3rem;
@@ -194,13 +220,17 @@ header {
   place-items: center;
   color: var(--text);
   background: var(--surface);
-  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+  transition: background var(--transition), border-color var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 .theme-toggle:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+.dark .theme-toggle:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
 .mobile-menu-button {
   display: none;
 }
