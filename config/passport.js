@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+const CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL || "http://localhost:3003/auth/google/callback";
 const HOST_EMAIL = process.env.HOST_EMAIL;
 
 const googleConfigured = !!(CLIENT_ID && CLIENT_SECRET && CALLBACK_URL);
