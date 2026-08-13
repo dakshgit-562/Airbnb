@@ -75,7 +75,7 @@ app.use(errorsController.pageNotFound);
 const PORT = 3003;
 
 mongoose
-  .connect(DB_PATH)
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to Mongo");
     app.listen(PORT, () => {
