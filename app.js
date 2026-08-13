@@ -54,7 +54,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static(path.join(rootDir, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const passport = require('passport');
 // Load passport strategy (configures GoogleStrategy)
