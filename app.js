@@ -23,7 +23,7 @@ const errorsController = require("./controllers/errors");
 const app = express();
 
 app.set("view engine", "ejs");
-app.set("views", "views");
+app.set("views", path.join(__dirname, "views"));
 
 const store = MongoStore.create({
   mongoUrl: DB_PATH,
