@@ -3,19 +3,20 @@ const hostRouter = express.Router();
 const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
 
-// 1. Cloudinary और Multer इम्पोर्ट करना
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-// 2. Cloudinary सेटअप (असली Keys .env और Vercel से आएंगी)
+// 🚨 FIX: Bulletproof import (यह हर वर्ज़न में काम करेगा)
+const multerStorageCloudinary = require("multer-storage-cloudinary");
+const CloudinaryStorage = multerStorageCloudinary.CloudinaryStorage || multerStorageCloudinary;
+
+// Cloudinary Setup
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// 3. Storage सेटअप
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -26,7 +27,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-// 4. Routes (सिंटैक्स बिल्कुल पहले जैसा है)
+
 hostRouter.get("/add-home", hostController.getAddHome);
 hostRouter.post("/add-home", upload.single("image"), hostController.postAddHome);
 
