@@ -4,31 +4,39 @@ const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
 
 const multer = require("multer");
-
-// 🚨 सबसे बड़ी गलती यहीं होती है: .v2 का लगा होना 100% ज़रूरी है!
 const cloudinary = require("cloudinary").v2; 
+const multerStorageCloudinary = require("multer-storage-cloudinary");
 
-// 🚨 Braces { } का लगा होना भी ज़रूरी है
-const { CloudinaryStorage } = require("multer-storage-cloudinary"); 
-
-// Cloudinary Setup
+// 1. Cloudinary Setup
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary, // 🚨 यह लाइन मिस मत करना, यही uploader को चालू करती है
-  params: {
+// 2. 🚨 SMART STORAGE: यह Vercel के वर्ज़न को अपने आप हैंडल कर लेगा (कोई क्रैश नहीं होगा)
+let storage;
+if (multerStorageCloudinary.CloudinaryStorage) {
+  // अगर नया वर्ज़न है, तो यह चलेगा
+  storage = new multerStorageCloudinary.CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: "airbnb_homes",
+      allowedFormats: ["jpeg", "png", "jpg", "webp"]
+    }
+  });
+} else {
+  // अगर पुराना वर्ज़न है, तो बिना 'new' और बिना 'params' के यह चलेगा
+  storage = multerStorageCloudinary({
+    cloudinary: cloudinary,
     folder: "airbnb_homes",
-    allowedFormats: ["jpeg", "png", "jpg", "webp"],
-  },
-});
+    allowedFormats: ["jpeg", "png", "jpg", "webp"]
+  });
+}
 
 const upload = multer({ storage: storage });
 
-// 👇 इसके नीचे आपके सारे Routes बिल्कुल वैसे ही रहेंगे, उन्हें मत छेड़ना
+// 3. Routes (आपके पुराने राउट्स एकदम सेम रहेंगे)
 hostRouter.get("/add-home", hostController.getAddHome);
 hostRouter.post("/add-home", upload.single("image"), hostController.postAddHome);
 hostRouter.get("/host-home-list", hostController.getHostHomes);
