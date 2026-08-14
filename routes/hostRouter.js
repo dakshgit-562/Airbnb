@@ -4,11 +4,17 @@ const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
 
 const multer = require("multer");
-const cloudinary = require("cloudinary").v2;
+// 🚨 FIX 1: .v2 लगाना 100% ज़रूरी है, वरना 'uploader' एरर आएगा
+const cloudinary = require("cloudinary").v2; 
 
-// 🚨 FIX: Bulletproof import (यह हर वर्ज़न में काम करेगा)
-const multerStorageCloudinary = require("multer-storage-cloudinary");
-const CloudinaryStorage = multerStorageCloudinary.CloudinaryStorage || multerStorageCloudinary;
+// 🚨 FIX 2: यह कोड पुराने और नए दोनों वर्ज़न में चलेगा (बिना क्रैश हुए)
+const multerCloudinary = require("multer-storage-cloudinary");
+const CloudinaryStorage = multerCloudinary.CloudinaryStorage || multerCloudinary;
+
+// 🚨 FIX 3: अगर Vercel से Keys नहीं आ रही हैं, तो यह लोडिंग अटकाने के बजाय एरर दिखा देगा
+if (!process.env.CLOUDINARY_CLOUD_NAME) {
+  console.log("❌ ERROR: Cloudinary Keys Vercel से नहीं आ रही हैं!");
+}
 
 // Cloudinary Setup
 cloudinary.config({
@@ -27,10 +33,9 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-
+// 👇 इसके नीचे आपके सारे Routes बिल्कुल वैसे ही रहेंगे
 hostRouter.get("/add-home", hostController.getAddHome);
 hostRouter.post("/add-home", upload.single("image"), hostController.postAddHome);
-
 hostRouter.get("/host-home-list", hostController.getHostHomes);
 hostRouter.get("/bookings", bookingController.getHostBookings);
 hostRouter.post("/bookings/cancel/:bookingId", bookingController.cancelHostBooking);
