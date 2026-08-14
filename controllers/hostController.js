@@ -53,22 +53,22 @@ exports.getHostHomes = (req, res, next) => {
 
 exports.postAddHome = (req, res, next) => {
   const { houseName, price, location, rating, description } = req.body;
-  const image = req.file; // Multer se photo yahan aayegi
+  const image = req.file; 
   
   if (!image) {
     console.log("Error: Image upload is required!");
     return res.redirect("/host/add-home");
   }
 
-  // Ab koi OIP4 nahi, seedha original photo ka path
-  const photoUrl = "/images/" + image.filename;
+  // 🚨 FIX: Cloudinary में असली URL 'image.path' के अंदर आता है
+  const photoUrl = image.path; 
 
   const home = new Home({
     houseName,
     price,
     location,
     rating,
-    photoUrl: photoUrl,
+    photoUrl: photoUrl, // डायरेक्ट Cloudinary का लिंक
     description,
     host: req.session.user ? req.session.user._id : undefined,
   });
@@ -100,10 +100,9 @@ exports.postEditHome = (req, res, next) => {
       home.rating = rating;
       home.description = description;
 
-      // Agar user ne nayi photo upload ki hai tabhi URL update hoga
-      // Agar nahi ki, toh purani photo waisi ki waisi hi safe rahegi
+      // 🚨 FIX: अगर नई फोटो आई है, तो Cloudinary का नया लिंक सेव करें
       if (image) {
-        home.photoUrl = "/images/" + image.filename;
+        home.photoUrl = image.path; 
       }
       
       return home.save(); 
@@ -117,7 +116,6 @@ exports.postEditHome = (req, res, next) => {
       res.redirect("/host/host-home-list");
     });
 };
-
 // FIX: Delete functionality updated to clear orphaned images and bookings
 exports.postDeleteHome = async (req, res, next) => {
   const homeId = req.params.homeId;
