@@ -4,17 +4,12 @@ const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
 
 const multer = require("multer");
-// 🚨 FIX 1: .v2 लगाना 100% ज़रूरी है, वरना 'uploader' एरर आएगा
+
+// 🚨 सबसे बड़ी गलती यहीं होती है: .v2 का लगा होना 100% ज़रूरी है!
 const cloudinary = require("cloudinary").v2; 
 
-// 🚨 FIX 2: यह कोड पुराने और नए दोनों वर्ज़न में चलेगा (बिना क्रैश हुए)
-const multerCloudinary = require("multer-storage-cloudinary");
-const CloudinaryStorage = multerCloudinary.CloudinaryStorage || multerCloudinary;
-
-// 🚨 FIX 3: अगर Vercel से Keys नहीं आ रही हैं, तो यह लोडिंग अटकाने के बजाय एरर दिखा देगा
-if (!process.env.CLOUDINARY_CLOUD_NAME) {
-  console.log("❌ ERROR: Cloudinary Keys Vercel से नहीं आ रही हैं!");
-}
+// 🚨 Braces { } का लगा होना भी ज़रूरी है
+const { CloudinaryStorage } = require("multer-storage-cloudinary"); 
 
 // Cloudinary Setup
 cloudinary.config({
@@ -24,7 +19,7 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary: cloudinary, // 🚨 यह लाइन मिस मत करना, यही uploader को चालू करती है
   params: {
     folder: "airbnb_homes",
     allowedFormats: ["jpeg", "png", "jpg", "webp"],
@@ -33,7 +28,7 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-// 👇 इसके नीचे आपके सारे Routes बिल्कुल वैसे ही रहेंगे
+// 👇 इसके नीचे आपके सारे Routes बिल्कुल वैसे ही रहेंगे, उन्हें मत छेड़ना
 hostRouter.get("/add-home", hostController.getAddHome);
 hostRouter.post("/add-home", upload.single("image"), hostController.postAddHome);
 hostRouter.get("/host-home-list", hostController.getHostHomes);
