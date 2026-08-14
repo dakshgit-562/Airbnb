@@ -4,11 +4,10 @@ const hostController = require("../controllers/hostController");
 const bookingController = require("../controllers/bookingController");
 
 const multer = require("multer");
-const cloudinary = require("cloudinary").v2;
-
-// 🚨 FIX: Bulletproof import (यह हर वर्ज़न में काम करेगा)
-const multerStorageCloudinary = require("multer-storage-cloudinary");
-const CloudinaryStorage = multerStorageCloudinary.CloudinaryStorage || multerStorageCloudinary;
+// 🚨 FIX 1: cloudinary के बाद .v2 होना 100% ज़रूरी है
+const cloudinary = require("cloudinary").v2; 
+// 🚨 FIX 2: CloudinaryStorage के आस-पास { } ब्रैकेट्स होना ज़रूरी है
+const { CloudinaryStorage } = require("multer-storage-cloudinary"); 
 
 // Cloudinary Setup
 cloudinary.config({
@@ -18,7 +17,7 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary: cloudinary, // स्पेलिंग एकदम यही होनी चाहिए
   params: {
     folder: "airbnb_homes",
     allowedFormats: ["jpeg", "png", "jpg", "webp"],
@@ -27,9 +26,10 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-
+// 👇 इसके नीचे आपके सारे Routes बिल्कुल वैसे ही रहेंगे
 hostRouter.get("/add-home", hostController.getAddHome);
 hostRouter.post("/add-home", upload.single("image"), hostController.postAddHome);
+// ... बाकि सब सेम रहेगा
 
 hostRouter.get("/host-home-list", hostController.getHostHomes);
 hostRouter.get("/bookings", bookingController.getHostBookings);
