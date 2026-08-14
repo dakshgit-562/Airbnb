@@ -8,7 +8,7 @@ const cloudinary = require("cloudinary").v2;
 
 // 🚨 FIX: Bulletproof import (यह हर वर्ज़न में काम करेगा)
 const multerStorageCloudinary = require("multer-storage-cloudinary");
-const {CloudinaryStorage} = multerStorageCloudinary.CloudinaryStorage || multerStorageCloudinary;
+const CloudinaryStorage = multerStorageCloudinary.CloudinaryStorage || multerStorageCloudinary;
 
 // Cloudinary Setup
 cloudinary.config({
