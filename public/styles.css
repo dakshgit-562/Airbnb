@@ -248,11 +248,6 @@ header {
     display: none;
   }
 
-  /* YAHI FIX HAI: Jisse logout aur naam mobile par chup jayega */
-  .desktop-item {
-    display: none !important;
-  }
-
   .mobile-menu-button {
     display: inline-flex;
     align-items: center;
