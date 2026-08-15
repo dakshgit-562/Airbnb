@@ -71,6 +71,14 @@
             Rs <%= home.price %>
           </p>
         </div>
+        <div class="field-group">
+        <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
+          Host Contact
+        </span>
+        <p class="text-base font-bold text-slate-800 dark:text-slate-100">
+          📞 <%= home.hostPhone || 'Not Available' %>
+        </p>
+      </div>
       </div>
 
       <% if (isLoggedIn && user && user.userType === 'guest') { %>
