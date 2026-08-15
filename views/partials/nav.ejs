@@ -28,11 +28,11 @@
     </div>
 
     <div class="nav-actions">
-      <button class="theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
+      <!-- Desktop Theme Toggle -->
+      <button class="theme-toggle desktop-theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
-        
         <svg class="hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -63,8 +63,34 @@
   </nav>
 
   <div class="mobile-menu" data-mobile-menu>
+    <!-- Close Button -->
+    <button class="close-menu-btn" aria-label="Close menu">&times;</button>
+    
+    <!-- Mobile Theme Toggle -->
+    <div class="mobile-theme-container">
+      <span style="font-weight: 600;">Theme</span>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode" style="border: none; box-shadow: none;">
+        <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <svg class="hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+    </div>
+
+    <hr style="margin: 1rem 0; border-color: var(--border);">
+
     <a href="/" class="nav-link">Home</a>
-      <% if (isLoggedIn && user) { %>
+    <% if (isLoggedIn && user) { %>
       <% if (user.userType === 'host') { %>
         <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
         <a href="/host/add-home" class="nav-link">Add Home</a>
@@ -77,12 +103,14 @@
       <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
         <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
       <% } %>
-      <form action="/logout" method="POST">
-        <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
+      <form action="/logout" method="POST" style="margin-top: auto; padding-top: 1rem;">
+        <button type="submit" class="nav-button secondary w-full text-left" style="text-align: center;">Logout</button>
       </form>
     <% } else { %>
-      <a href="/signup" class="nav-button secondary w-full">Sign Up</a>
-      <a href="/login" class="nav-button primary w-full">Login</a>
+      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-top: 1rem;">
+        <a href="/signup" class="nav-button secondary w-full" style="text-align: center;">Sign Up</a>
+        <a href="/login" class="nav-button primary w-full" style="text-align: center;">Login</a>
+      </div>
     <% } %>
   </div>
 </header>
@@ -108,13 +136,20 @@
       targetElement.style.transition = "opacity 0.25s ease-in-out";
     }
 
-    // Yahan mobile menu ko open/close karne wala JS fix hai
+    // Mobile menu open/close logic
     const mobileBtn = document.querySelector('[data-mobile-menu-button]');
     const mobileMenu = document.querySelector('[data-mobile-menu]');
+    const closeMenuBtn = document.querySelector('.close-menu-btn');
     
     if (mobileBtn && mobileMenu) {
       mobileBtn.addEventListener('click', function () {
-        mobileMenu.classList.toggle('open');
+        mobileMenu.classList.add('open');
+      });
+    }
+
+    if (closeMenuBtn && mobileMenu) {
+      closeMenuBtn.addEventListener('click', function () {
+        mobileMenu.classList.remove('open');
       });
     }
   });

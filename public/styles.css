@@ -50,6 +50,7 @@
   --warning: #F59E0B;
   --danger: #F87171;
 }
+
 html {
   scroll-behavior: smooth;
 }
@@ -106,13 +107,11 @@ img {
 header {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  /* ✨ Light Mode Navbar: Crisp White with Blur */
   background: rgba(255, 255, 255, 0.85);
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .dark header {
-  /* ✨ Dark Mode Navbar: Translucent Midnight */
   background: rgba(9, 9, 11, 0.85);
   border-color: rgba(255, 255, 255, 0.05);
 }
@@ -196,14 +195,13 @@ header {
   align-items: center;
   gap: 0.75rem;
 }
-/* Theme Toggle Icon Sizes & Logic */
+
 .theme-toggle svg {
   width: 1.25rem;
   height: 1.25rem;
   transition: transform var(--transition);
 }
 
-/* Jab Dark mode active ho, tab Moon ko chhupao aur Sun ko dikhao */
 .dark .theme-toggle .moon-icon {
   display: none;
 }
@@ -211,6 +209,7 @@ header {
 .dark .theme-toggle .sun-icon {
   display: block !important;
 }
+
 .theme-toggle {
   width: 3rem;
   height: 3rem;
@@ -232,17 +231,64 @@ header {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-
-.mobile-menu {
+.mobile-menu-button {
   display: none;
 }
 
+
+/* --- YAHAN SE SLIDE-IN SIDEBAR KA FIX HAI --- */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -320px; /* Screen ke bahar chupa hua */
+  width: 280px;
+  height: 100vh;
+  background: var(--surface);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: right 0.3s ease-in-out;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .mobile-menu.open {
+  right: 0; /* Slide ho kar andar aayega */
+}
+
+.close-menu-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.mobile-theme-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.mobile-menu a,
+.mobile-menu button {
   display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 0.5rem;
 }
 
 @media (max-width: 860px) {
   .nav-links {
+    display: none;
+  }
+  
+  /* Desktop wale theme toggle ko chupa do */
+  .desktop-theme-toggle {
     display: none;
   }
 
@@ -257,28 +303,8 @@ header {
     background: var(--surface);
     color: var(--text);
   }
-
-  .mobile-menu {
-    position: absolute;
-    inset-inline: 0;
-    top: 100%;
-    margin-top: 0.5rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 1rem;
-    box-shadow: var(--card-shadow);
-    padding: 1rem;
-    z-index: 50;
-  }
-
-  .mobile-menu a,
-  .mobile-menu button {
-    display: block;
-    width: 100%;
-    text-align: left;
-    margin-bottom: 0.5rem;
-  }
 }
+/* --- SLIDE-IN FIX KHATAM --- */
 
 .page-shell {
   padding-top: 6rem;
