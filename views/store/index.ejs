@@ -84,6 +84,7 @@
             <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
           </div>
           <div class="card-content">
+            <!-- BOOKING STATUS LOGIC ADDED HERE -->
             <div class="mb-3">
               <% if (home.isBooked) { %>
                 <span class="text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded">🚨 Booked</span>
@@ -91,6 +92,7 @@
                 <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">✅ Not Booked yet</span>
               <% } %>
             </div>
+            <!-- END LOGIC -->
 
             <p class="badge-pill"><%= home.location %></p>
             <h3 class="card-title"><%= home.houseName %></h3>
