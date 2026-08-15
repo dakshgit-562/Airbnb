@@ -235,60 +235,16 @@ header {
   display: none;
 }
 
-
-/* --- YAHAN SE SLIDE-IN SIDEBAR KA FIX HAI --- */
 .mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -320px; /* Screen ke bahar chupa hua */
-  width: 280px;
-  height: 100vh;
-  background: var(--surface);
-  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  transition: right 0.3s ease-in-out;
-  padding: 2rem 1.5rem;
-  display: flex;
-  flex-direction: column;
+  display: none;
 }
 
 .mobile-menu.open {
-  right: 0; /* Slide ho kar andar aayega */
-}
-
-.close-menu-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1.5rem;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.mobile-theme-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-}
-
-.mobile-menu a,
-.mobile-menu button {
   display: block;
-  width: 100%;
-  text-align: left;
-  margin-bottom: 0.5rem;
 }
 
 @media (max-width: 860px) {
   .nav-links {
-    display: none;
-  }
-  
-  /* Desktop wale theme toggle ko chupa do */
-  .desktop-theme-toggle {
     display: none;
   }
 
@@ -303,8 +259,28 @@ header {
     background: var(--surface);
     color: var(--text);
   }
+
+  .mobile-menu {
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    margin-top: 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+    padding: 1rem;
+    z-index: 50;
+  }
+
+  .mobile-menu a,
+  .mobile-menu button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
 }
-/* --- SLIDE-IN FIX KHATAM --- */
 
 .page-shell {
   padding-top: 6rem;
