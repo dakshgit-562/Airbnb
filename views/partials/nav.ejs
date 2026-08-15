@@ -107,22 +107,15 @@
       
       targetElement.style.transition = "opacity 0.25s ease-in-out";
     }
-  });
-</script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // 1. मोबाइल बटन और मेनू को सिलेक्ट करना
+    // Yahan mobile menu ko open/close karne wala JS fix hai
     const mobileBtn = document.querySelector('[data-mobile-menu-button]');
     const mobileMenu = document.querySelector('[data-mobile-menu]');
-
-    // 2. बटन पर क्लिक करने पर मेनू को खोलना/बंद करना
+    
     if (mobileBtn && mobileMenu) {
       mobileBtn.addEventListener('click', function () {
         mobileMenu.classList.toggle('open');
       });
     }
-    
-    // (यहाँ आपका 'Premium Stays' वाला पुराना लूप कोड वैसे का वैसा ही रहने दें)
   });
 </script>
