@@ -28,8 +28,8 @@
     </div>
 
     <div class="nav-actions">
-      <!-- Dark/Light Mode Theme Toggle -->
-      <button class="theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
+      <!-- Theme Toggle (Sirf Desktop par dikhega) -->
+      <button class="theme-toggle desktop-item text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
@@ -47,23 +47,24 @@
       </button>
 
       <% if (!isLoggedIn) { %>
-        <a href="/signup" class="nav-button secondary hidden md:inline-block">Sign Up</a>
-        <a href="/login" class="nav-button primary hidden md:inline-block">Login</a>
+        <a href="/signup" class="nav-button secondary desktop-item">Sign Up</a>
+        <a href="/login" class="nav-button primary desktop-item">Login</a>
       <% } else { %>
-        <span class="hidden md:inline-flex text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
-        <form action="/logout" method="POST" class="hidden md:inline-block">
+        <!-- Hi, User aur Logout (Sirf Desktop par dikhega) -->
+        <span class="desktop-item text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
+        <form action="/logout" method="POST" class="inline desktop-item">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
 
-      <!-- 3 Line Hamburger Button -->
+      <!-- 🍔 3 Line Hamburger Button (Ab yeh ekdum saaf dikhega mobile par) -->
       <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Toggle menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </nav>
 
-  <!-- Simple Dropdown Mobile Menu -->
+  <!-- 🔻 Chota sa Dropdown Mobile Menu -->
   <div class="mobile-menu" data-mobile-menu>
     <a href="/" class="nav-link">Home</a>
     <% if (isLoggedIn && user) { %>
@@ -79,6 +80,8 @@
       <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
         <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
       <% } %>
+      
+      <!-- Logout Button (Dropdown ke andar) -->
       <form action="/logout" method="POST" class="mt-2">
         <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
       </form>
