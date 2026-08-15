@@ -51,8 +51,8 @@
         <a href="/login" class="nav-button primary desktop-item">Login</a>
       <% } else { %>
         <!-- Hi, User aur Logout (Sirf Desktop par dikhega) -->
-        <span class="desktop-item text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
-        <form action="/logout" method="POST" class="inline desktop-item">
+        <span class="desktop-item text-sm font-small text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
+        <form action="/logout" method="POST" class="inline desktop-item ml-2">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
