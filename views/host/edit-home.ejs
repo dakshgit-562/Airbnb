@@ -52,10 +52,12 @@
       <div class="field-group">
           <label for="hostPhone" class="text-sm text-slate-500">Host Contact Number</label>
             <input 
+              minlength="10"
+              maxlength="15"
               id="hostPhone" 
               name="hostPhone" 
               type="text" 
-              class="w-full"
+              class="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value="<%= editing ? home.hostPhone : '' %>" 
               placeholder="+91 9876543210" 
               required 
