@@ -1,14 +1,12 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
 
-<!-- Yahan se layout aur image fix ki gayi hai (Baaki poora logic same hai) -->
 <main class="page-shell container mx-auto py-10 px-4 md:px-0">
   
   <div class="mb-6">
     <a href="/homes" class="nav-button secondary">Back to homes</a>
   </div>
 
-  <!-- Ye raha Image Tag (Isse image perfect size mein aayegi) -->
   <div class="mb-8 w-full h-64 md:h-96 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
     <img 
       src="<%= home.photoUrl || '/images/OIP4.jpg' %>" 
@@ -21,15 +19,8 @@
     <div class="detail-summary">
       <div class="flex items-center justify-between gap-4 mb-4">
         <div>
-          <p class="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Premium stay
-          </p>
-
-          <h2 class="text-3xl font-bold">
-            <%= home.houseName %>
-          </h2>
-
-          <!-- BOOKING STATUS LOGIC ADDED HERE -->
+          <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Premium stay</p>
+          <h2 class="text-3xl font-bold"><%= home.houseName %></h2>
           <div class="mt-2">
             <% if (home.isBooked) { %>
               <span class="text-sm font-bold text-red-700 bg-red-100 px-2.5 py-1 rounded">🚨 Booked</span>
@@ -37,14 +28,8 @@
               <span class="text-sm font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded">✅ Not Booked yet (Booking Available)</span>
             <% } %>
           </div>
-          <!-- END LOGIC -->
-
         </div>
-
-        <span class="badge">
-          <i class="fas fa-star"></i>
-          <%= home.rating %>
-        </span>
+        <span class="badge"><i class="fas fa-star"></i> <%= home.rating %></span>
       </div>
 
       <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -53,53 +38,31 @@
 
       <div class="grid gap-3 mt-6">
         <div class="field-group">
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-            Location
-          </span>
-
-          <p class="text-base text-slate-700 dark:text-slate-200">
-            <%= home.location %>
-          </p>
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Location</span>
+          <p class="text-base text-slate-700 dark:text-slate-200"><%= home.location %></p>
         </div>
 
         <div class="field-group">
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-            Price per night
-          </span>
-
-          <p class="text-2xl font-extrabold text-slate-900 dark:text-white">
-            Rs <%= home.price %>
-          </p>
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Price per night</span>
+          <p class="text-2xl font-extrabold text-slate-900 dark:text-white">Rs <%= home.price %></p>
         </div>
+        
         <div class="field-group">
-        <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-          Host Contact
-        </span>
-        <p class="text-base font-bold text-slate-800 dark:text-slate-100">
-          📞 <%= home.hostPhone || 'Not Available' %>
-        </p>
-      </div>
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Host Contact</span>
+          <p class="text-base font-bold text-slate-800 dark:text-slate-100">📞 <%= home.hostPhone || 'Not Available' %></p>
+        </div>
       </div>
 
       <% if (isLoggedIn && user && user.userType === 'guest') { %>
-
-        <!-- Favourite -->
         <form action="/favourites" method="POST" class="mt-4">
           <input type="hidden" name="id" value="<%= home._id %>" />
           <button type="submit" class="heart-button w-full">
-            <span>
-              <i class="fas fa-heart heart-icon"></i>
-              Save to favourites
-            </span>
+            <span><i class="fas fa-heart heart-icon"></i> Save to favourites</span>
           </button>
         </form>
 
-        <!-- Booking Summary -->
         <div class="detail-summary mt-6">
-          <h3 class="text-xl font-semibold mb-3">
-            Booking summary
-          </h3>
-
+          <h3 class="text-xl font-semibold mb-3">Booking summary</h3>
           <form action="/bookings" method="POST" class="grid gap-3" id="booking-form">
             <input type="hidden" name="homeId" value="<%= home._id %>" />
 
@@ -133,23 +96,20 @@
               <p id="total-price" class="font-semibold">Rs 0</p>
             </div>
 
-            <!-- SUBMIT BUTTON LOGIC ADDED HERE -->
             <% if (home.isBooked) { %>
-                <button id="booking-submit" type="button" class="btn-primary w-full mt-4 pointer-events-none bg-slate-800  text-white" disabled>
-                      Already Booked
-                </button>
+              <button id="booking-submit" type="button" class="btn-primary w-full mt-4 pointer-events-none bg-slate-800 text-white" disabled>
+                Already Booked
+              </button>
             <% } else { %>
               <button id="booking-submit" type="submit" class="btn-primary w-full mt-4">
                 Confirm Booking
               </button>
             <% } %>
-            <!-- END LOGIC -->
-
           </form>
 
           <script>
             (function () {
-              const pricePerNight = Number(<%= home.price %>);
+              const pricePerNight = Number('<%= home.price %>');
               const checkInInput = document.getElementById('check-in');
               const checkOutInput = document.getElementById('check-out');
               const nightsCount = document.getElementById('nights-count');

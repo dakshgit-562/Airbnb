@@ -20,7 +20,6 @@
           <a href="/favourites" class="<%= currentPage === 'favourites' ? 'nav-link active' : 'nav-link' %>">Favourites</a>
           <a href="/bookings" class="<%= currentPage === 'bookings' ? 'nav-link active' : 'nav-link' %>">Bookings</a>
         <% } %>
-        
         <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
           <a href="/admin/manage-hosts" class="<%= currentPage === 'manage-hosts' ? 'nav-link active' : 'nav-link' %>">Manage Hosts</a>
         <% } %>
@@ -29,61 +28,63 @@
 
     <div class="nav-actions">
       <button class="theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
-        <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        
-        <svg class="hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
+        <i class="fas fa-moon dark:hidden"></i>
+        <i class="fas fa-sun hidden dark:inline"></i>
       </button>
 
       <% if (!isLoggedIn) { %>
-        <a href="/signup" class="nav-button secondary">Sign Up</a>
-        <a href="/login" class="nav-button primary">Login</a>
+        <a href="/signup" class="nav-button secondary hidden md:inline-block">Sign Up</a>
+        <a href="/login" class="nav-button primary hidden md:inline-block">Login</a>
       <% } else { %>
         <span class="hidden md:inline-flex text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
-        <form action="/logout" method="POST" class="inline">
+        <form action="/logout" method="POST" class="hidden md:inline-block">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
 
-      <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Toggle menu">
+      <button id="mobile-menu-btn" class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" aria-expanded="false" aria-label="Toggle menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </nav>
 
-  <div class="mobile-menu" data-mobile-menu>
-    <a href="/" class="nav-link">Home</a>
+  <!-- Pro Mobile Sidebar -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+  
+  <div id="mobile-menu" class="mobile-menu">
+    <div class="flex justify-between items-center mb-6 px-2">
+      <span class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-widest">Menu</span>
+      <button id="close-menu-btn" class="text-2xl text-slate-500 hover:text-red-500 transition">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-2 overflow-y-auto">
+      <a href="/" class="nav-link">Home</a>
       <% if (isLoggedIn && user) { %>
-      <% if (user.userType === 'host') { %>
-        <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
-        <a href="/host/add-home" class="nav-link">Add Home</a>
-        <a href="/host/bookings" class="nav-link">Host Bookings</a>
+        <% if (user.userType === 'host') { %>
+          <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
+          <a href="/host/add-home" class="nav-link">Add Home</a>
+          <a href="/host/bookings" class="nav-link">Host Bookings</a>
+        <% } %>
+        <% if (user.userType === 'guest') { %>
+          <a href="/favourites" class="nav-link">Favourites</a>
+          <a href="/bookings" class="nav-link">Bookings</a>
+        <% } %>
+        <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
+          <a href="/admin/manage-hosts" class="nav-link text-accent">Manage Hosts</a>
+        <% } %>
+        <div class="my-4 border-t border-slate-200 dark:border-slate-800"></div>
+        <span class="px-3 text-sm text-slate-500 mb-2">Signed in as <%= user.firstName %></span>
+        <form action="/logout" method="POST">
+          <button type="submit" class="btn-danger w-full text-center mt-2">Logout</button>
+        </form>
+      <% } else { %>
+        <div class="my-4 border-t border-slate-200 dark:border-slate-800"></div>
+        <a href="/signup" class="btn-secondary w-full text-center mb-3">Sign Up</a>
+        <a href="/login" class="btn-primary w-full text-center">Login</a>
       <% } %>
-      <% if (user.userType === 'guest') { %>
-        <a href="/favourites" class="nav-link">Favourites</a>
-        <a href="/bookings" class="nav-link">Bookings</a>
-      <% } %>
-      <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
-        <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
-      <% } %>
-      <form action="/logout" method="POST">
-        <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
-      </form>
-    <% } else { %>
-      <a href="/signup" class="nav-button secondary w-full">Sign Up</a>
-      <a href="/login" class="nav-button primary w-full">Login</a>
-    <% } %>
+    </div>
   </div>
 </header>
 
@@ -104,8 +105,24 @@
           targetElement.style.opacity = 1;
         }, 250);
       }, 2500);
-      
       targetElement.style.transition = "opacity 0.25s ease-in-out";
+    }
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const closeBtn = document.getElementById('close-menu-btn');
+    const sidebar = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+      document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+    }
+
+    if(mobileBtn && closeBtn && overlay) {
+      mobileBtn.addEventListener('click', toggleMenu);
+      closeBtn.addEventListener('click', toggleMenu);
+      overlay.addEventListener('click', toggleMenu);
     }
   });
 </script>
