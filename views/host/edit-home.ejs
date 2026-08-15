@@ -49,12 +49,18 @@
         <label for="description">Description</label>
         <textarea id="description" name="description" rows="5" placeholder="Tell guests what makes this stay special" required><%= editing ? home.description : '' %></textarea>
       </div>
-      <div class="field-group"> 
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]"> Host Contact (Help) </span>
-          <p class="text-base font-semibold text-slate-700 dark:text-slate-200"> 
-            📞 <%= home.hostPhone || 'Not Available' %> 
-          </p> 
-      </div>
+      <div class="field-group">
+          <label for="hostPhone" class="text-sm text-slate-500">Host Contact Number</label>
+            <input 
+              id="hostPhone" 
+              name="hostPhone" 
+              type="text" 
+              class="w-full"
+              value="<%= editing ? home.hostPhone : '' %>" 
+              placeholder="+91 9876543210" 
+              required 
+            />
+        </div>
 
       <div class="flex flex-col gap-3 sm:flex-row">
         <button type="submit" class="btn-primary flex-1"><%= editing ? 'Save changes' : 'Add home' %></button>
