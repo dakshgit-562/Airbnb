@@ -28,91 +28,69 @@
     </div>
 
     <div class="nav-actions">
-      <!-- 🌙 Desktop Theme Toggle (मोबाइल पर छुपा दिया है: hidden md:flex) -->
-      <button class="theme-toggle hidden md:flex text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
-        <i class="fas fa-moon dark:hidden"></i>
-        <i class="fas fa-sun hidden dark:inline"></i>
+      <button class="theme-toggle text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
+        <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        
+        <svg class="hidden dark:inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
       </button>
 
       <% if (!isLoggedIn) { %>
-        <a href="/signup" class="nav-button secondary hidden md:inline-block">Sign Up</a>
-        <a href="/login" class="nav-button primary hidden md:inline-block">Login</a>
+        <a href="/signup" class="nav-button secondary">Sign Up</a>
+        <a href="/login" class="nav-button primary">Login</a>
       <% } else { %>
         <span class="hidden md:inline-flex text-sm font-semibold text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
-        <form action="/logout" method="POST" class="hidden md:inline-block">
+        <form action="/logout" method="POST" class="inline">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
 
-      <!-- 🍔 Mobile Hamburger Button -->
-      <button id="mobile-menu-btn" class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" aria-expanded="false" aria-label="Toggle menu">
+      <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Toggle menu">
         <i class="fas fa-bars"></i>
       </button>
     </div>
   </nav>
 
-  <!-- 🚨 PRO SIDEBAR: Overlay -->
-  <div id="sidebar-overlay" class="sidebar-overlay"></div>
-  
-  <!-- 🚨 PRO SIDEBAR: Menu -->
-  <div id="mobile-menu" class="mobile-menu">
-    <div class="flex justify-between items-center mb-6">
-      <span class="text-xl font-black text-slate-900 dark:text-white uppercase tracking-widest">Menu</span>
-      <button id="close-menu-btn" class="text-2xl text-slate-500 hover:text-red-500 transition px-2">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <!-- 🌙 MOBILE Theme Toggle (साइडबार के अंदर) -->
-    <div class="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
-      <button class="w-full flex items-center justify-between p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-semibold" type="button" data-theme-toggle aria-label="Toggle dark mode">
-        <span>Dark / Light Mode</span>
-        <div>
-          <i class="fas fa-moon dark:hidden"></i>
-          <i class="fas fa-sun hidden dark:inline"></i>
-        </div>
-      </button>
-    </div>
-
-    <!-- Mobile Links -->
-    <div class="flex flex-col gap-3 overflow-y-auto">
-      <a href="/" class="nav-link">Home</a>
+  <div class="mobile-menu" data-mobile-menu>
+    <a href="/" class="nav-link">Home</a>
       <% if (isLoggedIn && user) { %>
-        <% if (user.userType === 'host') { %>
-          <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
-          <a href="/host/add-home" class="nav-link">Add Home</a>
-          <a href="/host/bookings" class="nav-link">Host Bookings</a>
-        <% } %>
-        <% if (user.userType === 'guest') { %>
-          <a href="/favourites" class="nav-link">Favourites</a>
-          <a href="/bookings" class="nav-link">Bookings</a>
-        <% } %>
-        <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
-          <a href="/admin/manage-hosts" class="nav-link text-accent">Manage Hosts</a>
-        <% } %>
-        
-        <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
-           <p class="text-sm text-slate-500 mb-3 px-2">Signed in as <%= user.firstName %></p>
-           <form action="/logout" method="POST">
-             <button type="submit" class="btn-danger w-full text-center py-2">Logout</button>
-           </form>
-        </div>
-      <% } else { %>
-        <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
-          <a href="/signup" class="btn-secondary w-full text-center py-2">Sign Up</a>
-          <a href="/login" class="btn-primary w-full text-center py-2">Login</a>
-        </div>
+      <% if (user.userType === 'host') { %>
+        <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
+        <a href="/host/add-home" class="nav-link">Add Home</a>
+        <a href="/host/bookings" class="nav-link">Host Bookings</a>
       <% } %>
-    </div>
+      <% if (user.userType === 'guest') { %>
+        <a href="/favourites" class="nav-link">Favourites</a>
+        <a href="/bookings" class="nav-link">Bookings</a>
+      <% } %>
+      <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
+        <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
+      <% } %>
+      <form action="/logout" method="POST">
+        <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
+      </form>
+    <% } else { %>
+      <a href="/signup" class="nav-button secondary w-full">Sign Up</a>
+      <a href="/login" class="nav-button primary w-full">Login</a>
+    <% } %>
   </div>
 </header>
 
 <div class="toast-root" aria-live="polite" aria-atomic="true"></div>
 
-<!-- JavaScript for Sidebar & Text Loop -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // 1. Text Loop Animation
     const texts = ["Premium Stays", "Luxury Villas", "Best Getaways", "Cozy Homes"];
     let index = 0;
     const targetElement = document.getElementById("loop-text");
@@ -126,33 +104,18 @@
           targetElement.style.opacity = 1;
         }, 250);
       }, 2500);
+      
       targetElement.style.transition = "opacity 0.25s ease-in-out";
     }
 
-    // 2. Pro Slide-in Sidebar Logic
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const closeBtn = document.getElementById('close-menu-btn');
-    const sidebar = document.getElementById('mobile-menu');
-    const overlay = document.getElementById('sidebar-overlay');
-
-    function openMenu() {
-      if (sidebar && overlay) {
-        sidebar.classList.add('open');
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden'; // Scrolling disable
-      }
+    // Yahan mobile menu ko open/close karne wala JS fix hai
+    const mobileBtn = document.querySelector('[data-mobile-menu-button]');
+    const mobileMenu = document.querySelector('[data-mobile-menu]');
+    
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', function () {
+        mobileMenu.classList.toggle('open');
+      });
     }
-
-    function closeMenu() {
-      if (sidebar && overlay) {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-        document.body.style.overflow = ''; // Scrolling enable
-      }
-    }
-
-    if (mobileBtn) mobileBtn.addEventListener('click', openMenu);
-    if (closeBtn) closeBtn.addEventListener('click', closeMenu);
-    if (overlay) overlay.addEventListener('click', closeMenu);
   });
 </script>
