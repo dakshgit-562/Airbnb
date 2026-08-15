@@ -84,15 +84,15 @@
             <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
           </div>
           <div class="card-content">
-            
-            <!-- BOOKING STATUS BADGE -->
+            <!-- BOOKING STATUS LOGIC ADDED HERE -->
             <div class="mb-3">
               <% if (home.isBooked) { %>
-                <span class="inline-block text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded">🚨 Booked</span>
+                <span class="text-xs font-bold text-red-700 bg-red-100 px-2 py-1 rounded">🚨 Booked</span>
               <% } else { %>
-                <span class="inline-block text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">✅ Not Booked yet</span>
+                <span class="text-xs font-bold text-green-700 bg-green-100 px-2 py-1 rounded">✅ Not Booked yet</span>
               <% } %>
             </div>
+            <!-- END LOGIC -->
 
             <p class="badge-pill"><%= home.location %></p>
             <h3 class="card-title"><%= home.houseName %></h3>
@@ -102,11 +102,11 @@
               <span>Rs <strong><%= home.price %></strong> / night</span>
             </div>
             <div class="property-actions">
-              <a class="btn-secondary" style="display:flex; justify-content:center;" href="/homes/<%= home._id %>">View details</a>
+              <a class="btn-secondary " href="/homes/<%= home._id %>">View details</a>
               <% if (isLoggedIn && user && user.userType === 'guest') { %>
-                <form action="/favourites" method="POST" style="width: 100%;">
+                <form action="/favourites" method="POST">
                   <input type="hidden" name="id" value="<%= home._id %>" />
-                  <button type="submit" class="heart-button" style="width: 100%;" aria-label="Save to favourites">
+                  <button type="submit" class="heart-button" aria-label="Save to favourites">
                     <span><i class="fas fa-heart heart-icon"></i> Save</span>
                   </button>
                 </form>
