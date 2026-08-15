@@ -65,7 +65,7 @@ exports.getEditHome = (req, res, next) => {
 // 3. Post Add Home
 exports.postAddHome = async (req, res, next) => {
   try {
-    const { houseName, price, location, rating, description } = req.body;
+    const { houseName, price, location, rating, description,hostPhone } = req.body;
     const image = req.file; 
     
     if (!image) return res.redirect("/host/add-home");
@@ -78,7 +78,9 @@ exports.postAddHome = async (req, res, next) => {
       location,
       rating,
       description,
+      hostPhone,
       photoUrl: result.secure_url,
+      
       host: req.session.user ? req.session.user._id : undefined,
     });
 
@@ -93,7 +95,7 @@ exports.postAddHome = async (req, res, next) => {
 // 4. Post Edit Home: Security Check ke saath
 exports.postEditHome = async (req, res, next) => {
   try {
-    const { id, houseName, price, location, rating, description } = req.body;
+    const { id, houseName, price, location, rating, description, hostPhone } = req.body;
     const image = req.file; 
     const hostId = req.session.user ? req.session.user._id : null;
 
@@ -109,6 +111,7 @@ exports.postEditHome = async (req, res, next) => {
     home.location = location;
     home.rating = rating;
     home.description = description;
+    home.hostPhone=hostPhone;
 
     if (image) {
       const result = await cloudinary.uploader.upload(image.path, { folder: "airbnb_homes" });

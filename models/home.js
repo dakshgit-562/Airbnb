@@ -23,6 +23,7 @@ const homeSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
+  hostPhone: { type: String, required: true },
   isBooked: {
     type: Boolean,
     default: false
