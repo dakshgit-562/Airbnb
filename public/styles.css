@@ -369,7 +369,6 @@ header {
 .hero-card-header h2 {
   margin: 0;
 }
-
 .search-row {
   display: flex;
   flex-wrap: wrap;
@@ -381,7 +380,7 @@ header {
   display: grid;
   gap: 0.55rem;
   flex: 1;
-  min-width: 200px;
+  min-width: 100%; /* Fixed for small screens */
 }
 
 .search-field span {
@@ -400,6 +399,7 @@ header {
   border-radius: 1.1rem;
   padding: 0.95rem 1rem;
   background: var(--surface-muted);
+  box-sizing: border-box; /* Ensures padding doesn't break layout width */
 }
 
 .input-surface i {
@@ -416,11 +416,21 @@ header {
 }
 
 .search-action {
-  min-width: 160px;
+  min-width: 100%; /* Matches input box width on mobile */
   padding-left: 1.75rem;
   padding-right: 1.75rem;
 }
 
+/* Restores layout for larger screens (Desktop/Tablet) */
+@media (min-width: 640px) {
+  .search-field {
+    min-width: 200px;
+  }
+  .search-action {
+    min-width: 160px;
+    width: auto;
+  }
+}
 .search-note {
   color: var(--muted);
   font-size: 0.95rem;
