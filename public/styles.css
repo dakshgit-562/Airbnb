@@ -902,7 +902,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .dark .status-available { color: #6ee7b7; }
 .detail-summary { padding: clamp(1.25rem, 3vw, 2rem); }
 .detail-layout { max-width: 62rem; margin-inline: auto; }
-.detail-hero-media { width: 100%; height: clamp(15rem, 34vw, 32rem); overflow: hidden; border: 1px solid var(--border); border-radius: 1.5rem; box-shadow: var(--card-shadow); }
+.detail-hero-media {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
 .detail-hero-media img {
   width: 100%;
   height: auto;
