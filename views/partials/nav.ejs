@@ -51,8 +51,10 @@
         <a href="/login" class="nav-button primary desktop-item">Login</a>
       <% } else { %>
         <!-- Hi, User aur Logout (Sirf Desktop par dikhega) -->
-        <span class="desktop-item text-sm font-small text-slate-800 dark:text-slate-200">Hi, <%= user.firstName %></span>
-        <form action="/logout" method="POST" class="inline desktop-item ml-2">
+        <span class="user-greeting desktop-item" aria-label="Signed in user">
+          <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
+          <span>Hi, <strong><%= user.firstName %></strong></span>
+        <form action="/logout" method="POST" class="inline desktop-item -2">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
@@ -64,8 +66,27 @@
     </div>
   </nav>
 
-  <!-- 🔻 Chota sa Dropdown Mobile Menu -->
-  <div class="mobile-menu" data-mobile-menu>
+  <div class="mobile-menu-backdrop" data-mobile-menu-backdrop></div>
+  <!-- Mobile navigation drawer; links and actions intentionally retain their existing routes. -->
+  <aside class="mobile-menu" data-mobile-menu aria-hidden="true" aria-label="Mobile navigation">
+    <div class="mobile-menu-header">
+      <a href="/" class="nav-brand">
+        <span class="brand-mark">N</span>
+        <span class="font-extrabold">NestStay</span>
+      </a>
+      <button class="mobile-menu-close" type="button" data-mobile-menu-close aria-label="Close menu">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <% if (isLoggedIn && user) { %>
+      <div class="mobile-user">
+        <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
+        <div><span class="mobile-user-label">Signed in as</span><strong><%= user.firstName %></strong></div>
+      </div>
+    <% } %>
+
+    <nav class="mobile-menu-links">
     <a href="/" class="nav-link">Home</a>
     <% if (isLoggedIn && user) { %>
       <% if (user.userType === 'host') { %>
@@ -81,46 +102,16 @@
         <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
       <% } %>
       
-      <!-- Logout Button (Dropdown ke andar) -->
-      <form action="/logout" method="POST" class="mt-2">
+      <form action="/logout" method="POST" class="mobile-logout">
         <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
       </form>
     <% } else { %>
       <a href="/signup" class="nav-button secondary w-full mb-2">Sign Up</a>
       <a href="/login" class="nav-button primary w-full">Login</a>
     <% } %>
-  </div>
+    </nav>
+  </aside>
 </header>
 
 <div class="toast-root" aria-live="polite" aria-atomic="true"></div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const texts = ["Premium Stays", "Luxury Villas", "Best Getaways", "Cozy Homes"];
-    let index = 0;
-    const targetElement = document.getElementById("loop-text");
-
-    if (targetElement) {
-      setInterval(() => {
-        index = (index + 1) % texts.length;
-        targetElement.style.opacity = 0;
-        setTimeout(() => {
-          targetElement.textContent = texts[index];
-          targetElement.style.opacity = 1;
-        }, 250);
-      }, 2500);
-      
-      targetElement.style.transition = "opacity 0.25s ease-in-out";
-    }
-
-    // Toggle Dropdown Menu Logic
-    const mobileBtn = document.querySelector('[data-mobile-menu-button]');
-    const mobileMenu = document.querySelector('[data-mobile-menu]');
-    
-    if (mobileBtn && mobileMenu) {
-      mobileBtn.addEventListener('click', function () {
-        mobileMenu.classList.toggle('open');
-      });
-    }
-  });
-</script>

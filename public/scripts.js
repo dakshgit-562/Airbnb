@@ -1,6 +1,8 @@
 const themeToggle = document.querySelector('[data-theme-toggle]');
 const mobileMenuButton = document.querySelector('[data-mobile-menu-button]');
 const mobileMenu = document.querySelector('[data-mobile-menu]');
+const mobileMenuBackdrop = document.querySelector('[data-mobile-menu-backdrop]');
+const mobileMenuClose = document.querySelector('[data-mobile-menu-close]');
 const htmlRoot = document.documentElement;
 
 function setTheme(theme) {
@@ -29,13 +31,20 @@ function toggleTheme() {
 
 function toggleMobileMenu() {
   if (!mobileMenu || !mobileMenuButton) return;
-  mobileMenu.classList.toggle('open');
-  mobileMenuButton.setAttribute('aria-expanded', mobileMenu.classList.contains('open'));
+  const isOpen = !mobileMenu.classList.contains('open');
+  mobileMenu.classList.toggle('open', isOpen);
+  mobileMenuBackdrop?.classList.toggle('open', isOpen);
+  document.body.classList.toggle('menu-open', isOpen);
+  mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+  mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
 }
 
 function closeMobileMenu() {
   if (!mobileMenu) return;
   mobileMenu.classList.remove('open');
+  mobileMenuBackdrop?.classList.remove('open');
+  document.body.classList.remove('menu-open');
+  mobileMenu.setAttribute('aria-hidden', 'true');
   if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'false');
 }
 
@@ -93,10 +102,27 @@ window.addEventListener('DOMContentLoaded', () => {
   if (mobileMenuButton) {
     mobileMenuButton.addEventListener('click', toggleMobileMenu);
   }
+  mobileMenuClose?.addEventListener('click', closeMobileMenu);
+  mobileMenuBackdrop?.addEventListener('click', closeMobileMenu);
+  mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
   document.addEventListener('click', (event) => {
-    if (mobileMenu && mobileMenuButton && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+    if (mobileMenu && mobileMenuButton && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target) && !mobileMenuBackdrop?.contains(event.target)) {
       closeMobileMenu();
     }
   });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMobileMenu();
+  });
+
+  const loopText = document.getElementById('loop-text');
+  if (loopText) {
+    const labels = ['Premium Stays', 'Luxury Villas', 'Best Getaways', 'Cozy Homes'];
+    let labelIndex = 0;
+    window.setInterval(() => {
+      labelIndex = (labelIndex + 1) % labels.length;
+      loopText.style.opacity = '0';
+      window.setTimeout(() => { loopText.textContent = labels[labelIndex]; loopText.style.opacity = '1'; }, 220);
+    }, 2500);
+  }
   parseToastQuery();
 });

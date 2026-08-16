@@ -32,9 +32,9 @@
           <!-- BOOKING STATUS LOGIC ADDED HERE -->
           <div class="mt-2">
             <% if (home.isBooked) { %>
-              <span class="text-sm font-bold text-red-700 bg-red-100 px-2.5 py-1 rounded">🚨 Booked</span>
+              <span class="status-badge status-booked">Booked</span>
             <% } else { %>
-              <span class="text-sm font-bold text-green-700 bg-green-100 px-2.5 py-1 rounded">✅ Not Booked yet (Booking Available)</span>
+              <span class="status-badge status-available">Booking available</span>
             <% } %>
           </div>
           <!-- END LOGIC -->
