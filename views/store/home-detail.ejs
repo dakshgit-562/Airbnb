@@ -57,7 +57,7 @@
             Location
           </span>
 
-          <p class="text-base text-slate-700 dark:text-slate-200">
+          <p class="text-base text-slate-700 dark:text-slate-200 flex items-center gap-2">
             <%= home.location %>
           </p>
         </div>
@@ -102,16 +102,6 @@
 
           <form action="/bookings" method="POST" class="grid gap-3" id="booking-form">
             <input type="hidden" name="homeId" value="<%= home._id %>" />
-
-            <div class="field-group">
-              <label class="text-sm text-slate-500">Property</label>
-              <p class="font-semibold"><%= home.houseName %></p>
-            </div>
-
-            <div class="field-group">
-              <label class="text-sm text-slate-500">Price per night</label>
-              <p class="font-semibold">Rs <%= home.price %></p>
-            </div>
 
             <div class="field-group">
               <label class="text-sm text-slate-500" for="check-in">Check-in</label>
