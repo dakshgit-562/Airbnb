@@ -9,7 +9,7 @@
   </div>
 
   <!-- Ye raha Image Tag (Isse image perfect size mein aayegi) -->
-  <div class="mb-8 w-full h-64 md:h-96 rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+  <div class="detail-hero-media mb-8">
     <img 
       src="<%= home.photoUrl || '/images/OIP4.jpg' %>" 
       alt="<%= home.houseName %>" 
@@ -17,7 +17,7 @@
     />
   </div>
 
-  <div class="space-y-6">
+  <div class="detail-layout">
     <div class="detail-summary">
       <div class="flex items-center justify-between gap-4 mb-4">
         <div>
@@ -51,7 +51,7 @@
         <%= home.description || 'A beautifully styled stay with premium amenities and a peaceful neighbourhood.' %>
       </p>
 
-      <div class="grid gap-3 mt-6">
+      <div class="detail-facts grid gap-3 mt-6">
         <div class="field-group">
           <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
             Location
@@ -95,7 +95,7 @@
         </form>
 
         <!-- Booking Summary -->
-        <div class="detail-summary mt-6">
+        <div class="detail-summary booking-card mt-6">
           <h3 class="text-xl font-semibold mb-3">
             Booking summary
           </h3>

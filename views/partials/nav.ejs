@@ -1,5 +1,9 @@
 <header class="sticky top-0 z-40">
   <nav class="navbar">
+    <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
     <a href="/" class="nav-brand">
       <span class="brand-mark">N</span>
       <div>
@@ -54,15 +58,15 @@
         <span class="user-greeting desktop-item" aria-label="Signed in user">
           <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
           <span>Hi, <strong><%= user.firstName %></strong></span>
+        </span>
         <form action="/logout" method="POST" class="inline desktop-item -2">
           <button type="submit" class="nav-button secondary">Logout</button>
         </form>
       <% } %>
 
-      <!-- 🍔 3 Line Hamburger Button (Ab yeh ekdum saaf dikhega mobile par) -->
-      <button class="mobile-menu-button text-slate-800 dark:text-slate-100" type="button" data-mobile-menu-button aria-expanded="false" aria-label="Toggle menu">
-        <i class="fas fa-bars"></i>
-      </button>
+      <% if (isLoggedIn && user) { %>
+        <span class="mobile-top-avatar user-avatar" aria-label="Signed in as <%= user.firstName %>"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
+      <% } %>
     </div>
   </nav>
 
@@ -101,6 +105,11 @@
       <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
         <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
       <% } %>
+
+      <button type="button" class="nav-link mobile-theme-toggle" data-mobile-theme-toggle>
+        <i class="fas fa-sliders-h" aria-hidden="true"></i>
+        Theme settings
+      </button>
       
       <form action="/logout" method="POST" class="mobile-logout">
         <button type="submit" class="nav-button secondary w-full text-left">Logout</button>

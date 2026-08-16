@@ -3,6 +3,7 @@ const mobileMenuButton = document.querySelector('[data-mobile-menu-button]');
 const mobileMenu = document.querySelector('[data-mobile-menu]');
 const mobileMenuBackdrop = document.querySelector('[data-mobile-menu-backdrop]');
 const mobileMenuClose = document.querySelector('[data-mobile-menu-close]');
+const mobileThemeToggle = document.querySelector('[data-mobile-theme-toggle]');
 const htmlRoot = document.documentElement;
 
 function setTheme(theme) {
@@ -104,6 +105,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   mobileMenuClose?.addEventListener('click', closeMobileMenu);
   mobileMenuBackdrop?.addEventListener('click', closeMobileMenu);
+  mobileThemeToggle?.addEventListener('click', toggleTheme);
   mobileMenu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileMenu));
   document.addEventListener('click', (event) => {
     if (mobileMenu && mobileMenuButton && !mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target) && !mobileMenuBackdrop?.contains(event.target)) {
