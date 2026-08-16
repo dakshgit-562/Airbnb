@@ -1,69 +1,86 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
 
-<main class="page-shell container mx-auto py-10">
-  <div class="list-heading">
-    <div>
-      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Booking dashboard</p>
-      <h1 class="section-title">My bookings</h1>
-      <p class="section-subtitle">Track your upcoming stays and reservation details.</p>
-    </div>
+<main class="page-shell container mx-auto py-10 px-4 max-w-xl">
+  <!-- Page Header -->
+  <div class="mb-8 border-b border-slate-200 dark:border-slate-700 pb-6">
+    <p class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-2">Booking dashboard</p>
+    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">My bookings</h1>
+    <p class="text-slate-500 mt-2 text-sm sm:text-base">Track your upcoming stays and reservation details.</p>
   </div>
 
   <% if (bookings && bookings.length > 0) { %>
-    <section class="mt-8 space-y-6">
+    <section class="space-y-6">
       <% bookings.forEach((booking) => { %>
-        <article class="card p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Booking Card -->
+        <article class="bg-white dark:bg-slate-900 rounded-6xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden transition-all hover:shadow-md">
+          
+          <!-- Top Section: Property Name & Status -->
+          <div class="p-2 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Property</span>
-              <p class="mt-2 font-semibold"><%= booking.home?.houseName || 'Unknown property' %></p>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1">Property</span>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white"><%= booking.home?.houseName || 'Unknown property' %></h2>
             </div>
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-in</span>
-              <p class="mt-2"><%= booking.checkIn.toDateString() %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-out</span>
-              <p class="mt-2"><%= booking.checkOut.toDateString() %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Status</span>
-              <span class="badge <%= booking.status === 'cancelled' ? 'badge-error' : 'badge' %>"><%= booking.status %></span>
+               <!-- Dynamic Status Badge -->
+               <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase <%= booking.status === 'cancelled' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' %>">
+                <%= booking.status %>
+              </span>
             </div>
           </div>
 
-          <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          <!-- Middle Section: Trip Details Grid -->
+          <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-50/50 dark:bg-slate-800/20">
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Nights</span>
-              <p class="mt-2"><%= booking.numberOfNights %></p>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">Check-in</span>
+              <p class="font-medium text-sm sm:text-base text-slate-900 dark:text-slate-200"><%= booking.checkIn.toDateString() %></p>
             </div>
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Price / night</span>
-              <p class="mt-2">Rs <%= booking.pricePerNight %></p>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">Check-out</span>
+              <p class="font-medium text-sm sm:text-base text-slate-900 dark:text-slate-200"><%= booking.checkOut.toDateString() %></p>
             </div>
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Total price</span>
-              <p class="mt-2 font-semibold">Rs <%= booking.totalPrice %></p>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">Nights</span>
+              <p class="font-medium text-sm sm:text-base text-slate-900 dark:text-slate-200"><%= booking.numberOfNights %></p>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">Price / night</span>
+              <p class="font-medium text-sm sm:text-base text-slate-900 dark:text-slate-200">Rs <%= booking.pricePerNight %></p>
             </div>
           </div>
 
-          <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <p class="text-sm text-slate-500">Booked on <strong><%= booking.createdAt.toDateString() %></strong></p>
-            <% if (booking.status !== 'cancelled') { %>
-              <form action="/bookings/cancel/<%= booking._id %>" method="POST">
-                <button type="submit" class="btn-danger">Cancel booking</button>
-              </form>
-            <% } %>
+          <!-- Bottom Section: Pricing & Actions -->
+          <div class="p-6 flex flex-row sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">Total price</span>
+              <p class="text-2xl sm:text-2xl font-extrabold text-slate-900 dark:text-white">Rs <%= booking.totalPrice %></p>
+            </div>
+            
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center gap-4 w-full sm:w-auto pt-4 sm:pt-0 border-t sm:border-0 border-slate-100 dark:border-slate-800">
+              <p class="text-xs text-slate-500 text-center sm:text-right">
+                Booked on <br class="hidden sm:block"><strong class="text-slate-700 dark:text-slate-300"><%= booking.createdAt.toDateString() %></strong>
+              </p>
+              <% if (booking.status !== 'cancelled') { %>
+                <form action="/bookings/cancel/<%= booking._id %>" method="POST" class="w-full sm:w-auto">
+                  <button type="submit" class="w-sm sm:w-auto px-5 py-2.5 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold rounded-lg transition-colors focus:ring-4 focus:outline-none focus:ring-red-200 dark:focus:ring-red-900 shadow-sm">
+                    Cancel booking
+                  </button>
+                </form>
+              <% } %>
+            </div>
           </div>
+
         </article>
       <% }) %>
     </section>
   <% } else { %>
-    <div class="empty-state mt-8">
-      <h2>You haven't made any bookings yet.</h2>
-      <p>When you book a stay, your trip details will appear here with easy access to your itinerary.</p>
-      <a href="/homes" class="btn-primary mt-4 inline-flex justify-center">Browse homes</a>
+    <!-- Empty State -->
+    <div class="mt-4 p-6 text-center bg-slate-50 dark:bg-slate-800/50 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">You haven't made any bookings yet.</h2>
+      <p class="text-slate-500 mb-6 max-w-md mx-auto text-sm sm:text-base">When you book a stay, your trip details will appear here with easy access to your itinerary.</p>
+      <a href="/homes" class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-sm rounded-lg transition-colors shadow-sm">
+        Browse homes
+      </a>
     </div>
   <% } %>
 </main>

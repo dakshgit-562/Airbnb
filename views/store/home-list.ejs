@@ -35,12 +35,7 @@
             
             <div class="property-actions">
               <a class="btn-secondary" href="/homes/<%= home._id %>">View Details</a>
-              <% if (isLoggedIn && user && user.userType === 'guest') { %>
-                <form action="/favourites" method="POST">
-                  <input type="hidden" name="id" value="<%= home._id %>" />
-                 
-                </form>
-              <% } %>
+              
             </div>
           </div>
         </article>
