@@ -32,16 +32,13 @@
             <p class="badge-pill"><%= home.location %></p>
             <h3 class="card-title"><%= home.houseName %></h3>
             
-            <div class="card-meta">
-              
-              <span>Rs <strong><%= home.price %></strong> / night</span>
-            </div>
+            
             <div class="property-actions">
               <a class="btn-secondary" href="/homes/<%= home._id %>">View Details</a>
               <% if (isLoggedIn && user && user.userType === 'guest') { %>
                 <form action="/favourites" method="POST">
                   <input type="hidden" name="id" value="<%= home._id %>" />
-                  <button type="submit" class="heart-button"><span><i class="fas fa-heart heart-icon"></i> Save</span></button>
+                 
                 </form>
               <% } %>
             </div>
