@@ -848,6 +848,10 @@ header {
 
 /* Responsive polish layer — presentation only */
 body { overflow-x: hidden; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 3px solid rgba(255, 56, 92, .55);
+  outline-offset: 3px;
+}
 .page-shell { padding-top: clamp(2rem, 5vw, 4.5rem); padding-bottom: 3rem; }
 .navbar { padding-inline: 1rem; min-height: 5.25rem; }
 .nav-brand { flex-shrink: 0; }
