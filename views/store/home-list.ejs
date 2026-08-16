@@ -10,6 +10,33 @@
     </div>
     <span class="badge"><%= registeredHomes.length %> homes</span>
   </section>
+  <aside class="hero-card">
+      <div class="hero-card-header">
+        <p class="text-sm uppercase tracking-[0.25em] text-slate-500">Search stays</p>
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Start your journey</h2>
+      </div>
+
+      <form action="/homes" method="GET" class="search-row">
+        <label class="search-field">
+          <span>Destination</span>
+          <div class="input-surface">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" name="destination" placeholder="Kuala Lumpur" aria-label="Destination" />
+          </div>
+        </label>
+
+        
+        <button type="submit" class="btn-primary search-action">SEARCH</button>
+      </form>
+    </aside>
+  </section>
+
+  <section class="list-heading mt-8">
+    <div>
+      <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Curated selection</p>
+      <h2 class="section-title">Explore premium homes</h2>
+      <p class="section-subtitle">A beautifully refined home for every travel style.</p>
+    </div>
 
   <% if (registeredHomes.length > 0) { %>
     <div class="card-grid mt-8">
