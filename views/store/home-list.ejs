@@ -14,31 +14,33 @@
   <% if (registeredHomes.length > 0) { %>
     <div class="card-grid mt-8">
       <% registeredHomes.forEach(home => { %>
-        <article class="property-card">
-          <div class="card-image-wrap">
-            <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
-          </div>
-          <div class="card-content">
-            <!-- BOOKING STATUS LOGIC ADDED HERE -->
-            <div class="mb-3">
-              <% if (home.isBooked) { %>
-                <span class="status-badge status-booked">Booked</span>
-              <% } else { %>
-                <span class="status-badge status-available ">Available</span>
-              <% } %>
+        
+        <!-- पूरे कार्ड को Anchor Tag में रैप कर दिया गया है -->
+        <a href="/homes/<%= home._id %>" style="text-decoration: none; color: inherit; display: block;">
+          <article class="property-card" style="cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 10px 15px -3px rgb(0 0 0 / 0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+            <div class="card-image-wrap">
+              <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
             </div>
-            <!-- END LOGIC -->
+            <div class="card-content">
+              <!-- BOOKING STATUS LOGIC -->
+              <div class="mb-2">
+                <% if (home.isBooked) { %>
+                  <span class="status-badge status-booked ">Booked</span>
+                <% } else { %>
+                  <span class="status-badge status-available ">Available</span>
+                <% } %>
+              </div>
+              <!-- END LOGIC -->
 
-            <p class="badge-pill"><%= home.location %></p>
-            <h3 class="card-title"><%= home.houseName %></h3>
-            
-            
-            <div class="property-actions">
-              <a class="btn-secondary" href="/homes/<%= home._id %>">View Details</a>
+              <p class="badge-pill"><%= home.location %></p>
+              <h3 class="card-title"><%= home.houseName %></h3>
               
+              <!-- View Details बटन को यहाँ से हटा दिया गया है -->
+
             </div>
-          </div>
-        </article>
+          </article>
+        </a>
+
       <% }) %>
     </div>
   <% } else { %>
