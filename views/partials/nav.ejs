@@ -109,8 +109,9 @@
       <% } %>
 
       <button type="button" class="nav-link mobile-theme-toggle" data-mobile-theme-toggle>
-        <i class="fas fa-sliders-h" aria-hidden="true"></i>
-        Theme settings
+  <!-- आइकॉन को भी डायनामिक बनाने के लिए id दी गई है -->
+        <i id="mobile-theme-icon" class="fas fa-moon" aria-hidden="true"></i>
+        <span id="mobile-theme-text">Dark Mode</span>
       </button>
       
       <form action="/logout" method="POST" class="mobile-logout">
@@ -124,4 +125,39 @@
   </aside>
 
 <div class="toast-root" aria-live="polite" aria-atomic="true"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const mobileThemeToggle = document.querySelector('[data-mobile-theme-toggle]');
+  const themeText = document.getElementById('mobile-theme-text');
+  const themeIcon = document.getElementById('mobile-theme-icon');
+
+  // फंक्शन जो चेक करेगा कि डार्क मोड ऑन है या ऑफ
+  function updateThemeUI() {
+    // आमतौर पर डार्क मोड के लिए <html> या <body> टैग पर 'dark' क्लास लगाई जाती है
+    const isDarkMode = document.documentElement.classList.contains('dark');
+
+    if (isDarkMode) {
+      themeText.textContent = 'Light Mode'; // डार्क मोड में Light Mode का ऑप्शन दिखाएं
+      themeIcon.className = 'fas fa-sun';   // सूरज का आइकॉन
+    } else {
+      themeText.textContent = 'Dark Mode';  // लाइट मोड में Dark Mode का ऑप्शन दिखाएं
+      themeIcon.className = 'fas fa-moon';  // चांद का आइकॉन
+    }
+  }
+
+  if (mobileThemeToggle) {
+    // जब यूजर बटन पर क्लिक करेगा
+    mobileThemeToggle.addEventListener('click', () => {
+      // यहां आपका पुराना थीम टॉगल करने वाला लॉजिक चलेगा (जैसे डार्क क्लास ऐड/रिमूव करना)
+      // उदाहरण के लिए: document.documentElement.classList.toggle('dark');
+      
+      // थोड़ी देर बाद UI को अपडेट करें ताकि क्लास टॉगल हो चुकी हो
+      setTimeout(updateThemeUI, 50); 
+    });
+  }
+
+  // पेज लोड होते ही एक बार UI सेट कर दें
+  updateThemeUI();
+});
+</script>
 
