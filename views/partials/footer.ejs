@@ -1,5 +1,3 @@
-<!-- CSS CACHE BYPASS: Footer Styles -->
-
 <footer class="pro-footer">
   <div class="container footer-wrapper">
 
@@ -8,6 +6,9 @@
       <h3 class="inspiration-title">Inspiration for future getaways</h3>
       <div class="inspiration-tabs">
         <span class="tab-active">Popular</span>
+        <span>Beach</span>
+        <span>Mountains</span>
+        <span>Outdoors</span>
       </div>
       <div class="inspiration-grid">
         <div class="insp-item"><strong>Goa</strong><span>Beach rentals</span></div>
@@ -21,38 +22,54 @@
 
     <hr class="footer-divider" />
 
-    <!-- Middle Section: Main Links -->
+    <!-- 🚨 Middle Section: PROJECT SPECIFIC LINKS 🚨 -->
     <div class="footer-links-grid">
+      
+      <!-- Column 1: Explore -->
       <div class="footer-col">
-        <h4>Support</h4>
+        <h4>Explore</h4>
         <ul>
+          <li><a href="/">Home</a></li>
           <li><a href="#">Help Centre</a></li>
-          <li><a href="#">Get help with a safety issue</a></li>
-          <li><a href="#">Anti-discrimination</a></li>
-          <li><a href="#">Disability support</a></li>
           <li><a href="#">Cancellation options</a></li>
+          <% if (!isLoggedIn) { %>
+            <li><a href="/login" style="color: var(--accent); font-weight: 600;">Login</a></li>
+            <li><a href="/signup">Sign Up</a></li>
+          <% } %>
         </ul>
       </div>
 
+      <!-- Column 2: Guests & Travel -->
       <div class="footer-col">
-        <h4>Hosting</h4>
+        <h4>Guests & Travel</h4>
+        <ul>
+          <% if (isLoggedIn && user && user.userType === 'guest') { %>
+            <li><a href="/favourites">My Favourites</a></li>
+            <li><a href="/bookings">My Bookings</a></li>
+          <% } else if (!isLoggedIn) { %>
+            <li><a href="/login">My Favourites</a></li>
+            <li><a href="/login">My Bookings</a></li>
+          <% } else { %>
+            <li><a href="#">Guest features</a></li>
+          <% } %>
+          <li><a href="#">Travel responsibly</a></li>
+          <li><a href="#">Disability support</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Hosting & Admin -->
+      <div class="footer-col">
+        <h4>Hosting & Admin</h4>
         <ul>
           <li><a href="/host/add-home">NestStay your home</a></li>
-          <li><a href="#">AirCover for Hosts</a></li>
+          <% if (isLoggedIn && user && user.userType === 'host') { %>
+            <li><a href="/host/host-home-list">Host Dashboard</a></li>
+            <li><a href="/host/bookings">Host Bookings</a></li>
+          <% } %>
+          <% if (isLoggedIn && user && user.email === 'dakshchaudhary10009@gmail.com') { %>
+            <li><a href="/admin/manage-hosts" style="color: var(--accent); font-weight: bold;">Manage Hosts (Admin)</a></li>
+          <% } %>
           <li><a href="#">Hosting resources</a></li>
-          <li><a href="#">Community forum</a></li>
-          <li><a href="#">Hosting responsibly</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>NestStay</h4>
-        <ul>
-          <li><a href="#">Newsroom</a></li>
-          <li><a href="#">New features</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Investors</a></li>
-          <li><a href="#">Emergency stays</a></li>
         </ul>
       </div>
     </div>
@@ -76,7 +93,11 @@
           <i class="fas fa-globe"></i> <span>English (IN)</span>
           <span class="currency">₹ INR</span>
         </div>
-        
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-square"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter-square"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        </div>
       </div>
     </div>
 
