@@ -88,9 +88,6 @@ exports.createBooking = async (req, res, next) => {
 
   await booking.save();
 
-  // Yahan Home ko booked mark kiya hai taaki Home page par bhi 'Booked' dikhe
-  await Home.findByIdAndUpdate(homeId, { isBooked: true });
-
   return res.redirect('/bookings?toast=bookingSuccess');
 };
 
@@ -133,19 +130,6 @@ exports.cancelGuestBooking = async (req, res, next) => {
 
   booking.status = 'cancelled';
   await booking.save();
-
-  // FIX: Check for other confirmed bookings before unbooking the home
-  if (booking.home) {
-    const homeIdToFree = booking.home._id || booking.home;
-    const remainingBookings = await Booking.findOne({ 
-      home: homeIdToFree, 
-      status: 'confirmed' 
-    });
-    
-    if (!remainingBookings) {
-      await Home.findByIdAndUpdate(homeIdToFree, { isBooked: false });
-    }
-  }
 
   return res.redirect('/bookings?toast=bookingCancelled');
 };
@@ -201,19 +185,6 @@ exports.cancelHostBooking = async (req, res, next) => {
 
   booking.status = 'cancelled';
   await booking.save();
-
-  // FIX: Check for other confirmed bookings before unbooking the home
-  if (booking.home) {
-    const homeIdToFree = booking.home._id || booking.home;
-    const remainingBookings = await Booking.findOne({ 
-      home: homeIdToFree, 
-      status: 'confirmed' 
-    });
-    
-    if (!remainingBookings) {
-      await Home.findByIdAndUpdate(homeIdToFree, { isBooked: false });
-    }
-  }
 
   return res.redirect('/host/bookings?toast=bookingCancelled');
 };

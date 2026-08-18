@@ -1,49 +1,37 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
 
-<!-- Yahan se layout aur image fix ki gayi hai (Baaki poora logic same hai) -->
 <main class="page-shell container mx-auto py-10 px-4 md:px-0">
   
   <div class="mb-6">
     <a href="/homes" class="nav-button secondary">Back to homes</a>
   </div>
 
-  <!-- Ye raha Image Tag (Isse image perfect size mein aayegi) -->
   <div class="detail-hero-media mb-8">
     <img 
       src="<%= home.photoUrl || '/images/OIP4.jpg' %>" 
       alt="<%= home.houseName %>" 
-      class="w-full h-full object-cover" 
+      class="w-full h-full object-cover rounded-xl" 
     />
   </div>
 
-  <div class="detail-layout">
-    <div class="detail-summary">
+  <div class="detail-layout grid md:grid-cols-3 gap-8">
+    
+    <!-- Left Side: Home Details -->
+    <div class="detail-summary md:col-span-2">
       <div class="flex items-center justify-between gap-4 mb-4">
         <div>
-          <p class="text-sm uppercase tracking-[0.3em] text-slate-500">
-            Premium stay
-          </p>
-
-          <h2 class="text-3xl font-bold">
-            <%= home.houseName %>
-          </h2>
-
-          <!-- BOOKING STATUS LOGIC ADDED HERE -->
+          <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Premium stay</p>
+          <h2 class="text-3xl font-bold"><%= home.houseName %></h2>
+          
           <div class="mt-2">
-            <% if (home.isBooked) { %>
-              <span class="status-badge status-booked">Booked</span>
-            <% } else { %>
-              <span class="status-badge status-available">Booking available</span>
-            <% } %>
+            <!-- Hamesha Available dikhayega kyunki dates ke hisaab se booking hogi -->
+            <span class="status-badge status-available bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Booking available</span>
           </div>
-          <!-- END LOGIC -->
-
         </div>
 
-        <span class="badge">
-          <i class="fas fa-star"></i>
-          <%= home.rating %>
+        <span class="badge flex items-center gap-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">
+          <i class="fas fa-star text-amber-500"></i> <%= home.rating %>
         </span>
       </div>
 
@@ -53,93 +41,88 @@
 
       <div class="detail-facts grid gap-3 mt-6">
         <div class="field-group">
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-            Location
-          </span>
-
-          <p class="text-base text-slate-700 dark:text-slate-200 flex items-center gap-2">
-            <%= home.location %>
-          </p>
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Location</span>
+          <p class="text-base text-slate-700 dark:text-slate-200 flex items-center gap-2"><%= home.location %></p>
         </div>
 
         <div class="field-group">
-          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-            Price per night
-          </span>
-
-          <p class="text-2xl font-extrabold text-slate-900 dark:text-white">
-            Rs <%= home.price %>
-          </p>
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Price per night</span>
+          <p class="text-2xl font-extrabold text-slate-900 dark:text-white">Rs <%= home.price %></p>
         </div>
-        <div class="field-group">
-        <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">
-          Host Contact
-        </span>
-        <p class="text-base font-bold text-slate-800 dark:text-slate-100">
-          📞 <%= home.hostPhone || 'Not Available' %>
-        </p>
-      </div>
-      </div>
 
+        <div class="field-group">
+          <span class="text-sm font-semibold text-slate-500 uppercase tracking-[0.25em]">Host Contact</span>
+          <p class="text-base font-bold text-slate-800 dark:text-slate-100">📞 <%= home.hostPhone || 'Not Available' %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Booking Form Card -->
+    <div class="md:col-span-1">
+      
       <% if (isLoggedIn && user && user.userType === 'guest') { %>
-
-        <!-- Favourite -->
-        <form action="/favourites" method="POST" class="mt-4">
+        <!-- Favourite Button -->
+        <form action="/favourites" method="POST" class="mb-4">
           <input type="hidden" name="id" value="<%= home._id %>" />
-          <button type="submit" class="heart-button w-full">
-            <span>
-              <i class="fas fa-heart heart-icon"></i>
-              Save to favourites
-            </span>
+          <button type="submit" class="heart-button w-full border border-slate-300 rounded-lg py-2 font-semibold hover:bg-slate-50 transition">
+            <span><i class="fas fa-heart text-rose-500 mr-2"></i> Save to favourites</span>
           </button>
         </form>
 
-        <!-- Booking Summary -->
-        <div class="detail-summary booking-card mt-6">
-          <h3 class="text-xl font-semibold mb-3">
-            Booking summary
-          </h3>
+        <div class="detail-summary booking-card bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+          <h3 class="text-xl font-semibold mb-3">Booking summary</h3>
 
+          <!-- ALREADY BOOKED DATES ALERT (Naya Logic) -->
+          <% if (typeof bookings !== 'undefined' && bookings.length > 0) { %>
+            <div class="mb-5 p-3 bg-rose-50 border border-rose-200 rounded-lg">
+              <h4 class="text-xs font-bold text-rose-800 mb-1 flex items-center gap-1">
+                <i class="fas fa-calendar-times"></i> Unavailable Dates
+              </h4>
+              <ul class="text-xs text-rose-600 list-disc pl-4 flex flex-col gap-1">
+                <% bookings.forEach(booking => { %>
+                  <li>
+                    <%= new Date(booking.checkIn).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) %> 
+                    <span class="mx-1">to</span> 
+                    <%= new Date(booking.checkOut).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) %>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+          <% } %>
+
+          <!-- Booking Form -->
           <form action="/bookings" method="POST" class="grid gap-3" id="booking-form">
             <input type="hidden" name="homeId" value="<%= home._id %>" />
 
             <div class="field-group">
               <label class="text-sm text-slate-500" for="check-in">Check-in</label>
-              <input id="check-in" name="checkIn" type="date" class="w-full" min="<%= new Date().toISOString().slice(0,10) %>" required />
+              <input id="check-in" name="checkIn" type="date" class="w-full p-2 border rounded" min="<%= new Date().toISOString().slice(0,10) %>" required />
             </div>
 
             <div class="field-group">
               <label class="text-sm text-slate-500" for="check-out">Check-out</label>
-              <input id="check-out" name="checkOut" type="date" class="w-full" required />
+              <input id="check-out" name="checkOut" type="date" class="w-full p-2 border rounded" required />
             </div>
 
-            <div class="field-group">
-              <label class="text-sm text-slate-500">Number of nights</label>
-              <p id="nights-count" class="font-semibold">0 nights</p>
+            <div class="field-group flex justify-between items-center mt-2">
+              <span class="text-sm text-slate-500">Number of nights</span>
+              <span id="nights-count" class="font-semibold">0 nights</span>
             </div>
 
-            <div class="field-group">
-              <label class="text-sm text-slate-500">Total price</label>
-              <p id="total-price" class="font-semibold">Rs 0</p>
+            <div class="field-group flex justify-between items-center pb-3 border-b border-slate-200">
+              <span class="text-sm text-slate-500">Total price</span>
+              <span id="total-price" class="font-bold text-lg">Rs 0</span>
             </div>
 
-            <!-- SUBMIT BUTTON LOGIC ADDED HERE -->
-            <% if (home.isBooked) { %>
-                <button id="booking-submit" type="button" class="btn-primary w-full mt-4 pointer-events-none bg-slate-800  text-white" disabled>
-                      Already Booked
-                </button>
-            <% } else { %>
-              <button id="booking-submit" type="submit" class="btn-primary w-full mt-4">
-                Confirm Booking
-              </button>
-            <% } %>
-            <!-- END LOGIC -->
-
+            <button id="booking-submit" type="submit" class="w-full bg-rose-600 text-white font-bold py-3 rounded-lg hover:bg-rose-700 transition mt-2">
+              Confirm Booking
+            </button>
           </form>
 
+          <!-- JavaScript for Price Calculation -->
           <script>
             (function () {
-              const pricePerNight = Number(<%= home.price %>);
+              const pricePerNight = Number('<%= home.price %>');
               const checkInInput = document.getElementById('check-in');
               const checkOutInput = document.getElementById('check-out');
               const nightsCount = document.getElementById('nights-count');
@@ -171,7 +154,15 @@
             })();
           </script>
         </div>
+      <% } else if (!isLoggedIn) { %>
+        <!-- Agar user login nahi hai toh usko prompt karein -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 text-center">
+          <h3 class="text-xl font-semibold mb-3">Ready to book?</h3>
+          <p class="text-slate-500 mb-4">Please log in as a guest to book this home.</p>
+          <a href="/login" class="block w-full bg-slate-800 text-white font-bold py-3 rounded-lg hover:bg-slate-900 transition">Log in</a>
+        </div>
       <% } %>
+
     </div>
   </div>
 </main>

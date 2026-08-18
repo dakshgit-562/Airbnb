@@ -96,16 +96,30 @@ exports.postRemoveFromFavourite = async (req, res, next) => {
   res.redirect("/favourites");
 };
 
-exports.getHomeDetails = (req, res, next) => {
-  const homeId = req.params.homeId;
-  Home.findById(homeId).then((home) => {
+exports.getHomeDetails = async (req, res, next) => {
+  try {
+    const homeId = req.params.homeId;
+    const home = await Home.findById(homeId);
+    
     if (!home) {
       return res.redirect("/homes");
     }
+
+    // NAYA LOGIC: Is ghar ki aage aane wali saari confirmed bookings fetch karein
+    const existingBookings = await Booking.find({
+      home: homeId,
+      status: 'confirmed',
+      checkOut: { $gte: new Date() } // Aaj ya future ki bookings
+    }).select('checkIn checkOut -_id');
+
     res.render("store/home-detail", {
       home: home,
       pageTitle: "Home Detail",
-      currentPage: "Home"
+      currentPage: "Home",
+      bookings: existingBookings
     });
-  });
+  } catch (err) {
+    console.log(err);
+    res.redirect("/homes");
+  }
 };
