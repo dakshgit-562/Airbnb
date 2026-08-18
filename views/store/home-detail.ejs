@@ -164,13 +164,31 @@
           </script>
         </div>
       <% } else if (!isLoggedIn) { %>
-        <!-- Agar user login nahi hai toh usko prompt karein -->
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 text-center">
-          <h3 class="text-xl font-semibold mb-3">Ready to book?</h3>
-          <p class="text-slate-500 mb-4">Please log in as a guest to book this home.</p>
-          <a href="/login" class="block w-full bg-slate-800 text-white font-bold py-3 rounded-lg hover:bg-slate-900 transition">Log in</a>
-        </div>
-      <% } %>
+  <!-- 🚨 FIXED: Pure CSS Theme Matching -->
+              <div style="background-color: var(--surface, #1e1e24); border: 1px solid var(--border, #333); padding: 2rem; border-radius: 1rem; text-align: center; margin-top: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);">
+                
+                <h3 style="font-size: 1.3rem; font-weight: bold; color: var(--text, #ffffff); margin-bottom: 0.5rem; margin-top: 0;">
+                  Ready to book?
+                </h3>
+                
+                <p style="color: var(--muted, #a1a1aa); font-size: 0.95rem; margin-bottom: 1.5rem;">
+                  Please log in as a guest to book this premium home.
+                </p>
+                
+                <a href="/login" 
+                  style="display: block; width: 100%; background-color: #e11d48; color: #ffffff; font-weight: bold; padding: 0.8rem; border-radius: 0.5rem; text-decoration: none; transition: background 0.2s;"
+                  onmouseover="this.style.backgroundColor='#be123c'" 
+                  onmouseout="this.style.backgroundColor='#e11d48'">
+                  Log in to Book
+                </a>
+                
+                <div style="margin-top: 1.2rem; font-size: 0.9rem; color: var(--muted, #a1a1aa);">
+                  Don't have an account? 
+                  <a href="/signup" style="color: #e11d48; font-weight: bold; text-decoration: underline;">Sign up</a>
+                </div>
+
+              </div>
+        <% } %>
 
     </div>
   </div>
