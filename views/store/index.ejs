@@ -64,18 +64,23 @@
               <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
             </div>
             <div class="card-content">
-              <!-- BOOKING STATUS LOGIC -->
+  <!-- Location Badge -->
+              <p class="badge-pill" style="margin-bottom: 8px;"><%= home.location %></p>
               
-              <!-- END LOGIC -->
-
-              <p class="badge-pill"><%= home.location %></p>
-              <h3 class="card-title"><%= home.houseName %></h3>
-              <span class="badge flex items-center gap-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">
-          <i class="fas fa-star text-amber-500"></i> <%= home.rating %>
-        </span>
-              
-              <!-- View Details बटन को यहाँ से हटा दिया गया है -->
-
+              <!-- 🚨 PURE CSS FIX: Guarantee 100% ek hi line mein aayega -->
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%;">
+                
+                <!-- House Name (Left side) -->
+                  <h3 class="card-title" style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  <%= home.houseName %>
+                  </h3>
+                
+                <!-- Rating (Right side) -->
+                  <span style="display: flex; align-items: center; gap: 4px; background-color: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 9999px; font-weight: bold; font-size: 0.75rem; flex-shrink: 0;">
+                    <i class="fas fa-star" style="color: #f59e0b;"></i> <%= home.rating %>
+                  </span>
+                
+              </div>
             </div>
           </article>
           
