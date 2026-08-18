@@ -52,12 +52,13 @@
               <h3 class="card-title"><%= home.houseName %></h3>
               
               <!-- View Details बटन को यहाँ से हटा दिया गया है -->
+               <span class="badge flex items-center gap-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">
+          <i class="fas fa-star text-amber-500"></i> <%= home.rating %>
+        </span>
 
             </div>
           </article>
-          <span class="badge flex items-center gap-1 bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold">
-          <i class="fas fa-star text-amber-500"></i> <%= home.rating %>
-        </span>
+          
         </a>
 
       <% }) %>
