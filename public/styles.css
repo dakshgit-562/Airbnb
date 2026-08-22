@@ -1051,3 +1051,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .social-icons a { color: var(--text); transition: opacity 0.2s; }
   .social-icons a:hover { opacity: 0.7; }
 
+.custom-search-container {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+  .custom-search-input {
+    flex-grow: 1;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    outline: none;
+    background-color: #ffffff;
+    color: #111827;
+    min-width: 250px;
+  }
+
+  /* 🌙 Dark Mode Styles (Jab HTML me 'dark' class lagti hai) */
+  html.dark .custom-search-container {
+    background-color: #1e293b; /* Dark theme ka background */
+    border-color: #334155;
+  }
+  html.dark .custom-search-input {
+    background-color: #0f172a; /* Input box dark */
+    border-color: #475569;
+    color: #f8fafc; /* Text white */
+  }
+  html.dark .custom-search-input::placeholder {
+    color: #94a3b8;
+  }
