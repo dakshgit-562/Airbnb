@@ -142,8 +142,19 @@ exports.getHostBookings = async (req, res, next) => {
 
   const hostHomes = await Home.find({ host: hostId }).select('_id');
   const homeIds = hostHomes.map((home) => home._id);
-
-  const bookings = await Booking.find({ home: { $in: homeIds } })
+  const searchEmail=req.query.email;
+  let bookingFilter = { home: { $in: homeIds } };
+  // Agar search box mein email dala gaya hai:
+  if (searchEmail) {
+    //Pehle database me us guest ko dhundho jiski email milti-julti ho ($regex se half spelling bhi kaam karegi)
+    const matchedUsers = await User.find({ email: { $regex: searchEmail, $options: 'i' } }).select('_id');
+    const matchedUserIds = matchedUsers.map(u => u._id);
+    
+    //Phir booking filter mein un guests ki ID set kar do
+    bookingFilter.user = { $in: matchedUserIds };
+  }
+  
+  const bookings = await Booking.find(bookingFilter)
     .populate('home')
     .populate('user')
     .sort({ checkIn: 1 });
@@ -152,6 +163,7 @@ exports.getHostBookings = async (req, res, next) => {
     pageTitle: 'Host Bookings',
     currentPage: 'host-bookings',
     bookings,
+    searchEmail: searchEmail || ''// EJS mein purani search dikhane ke liye
   });
 };
 exports.cancelGuestBooking = async (req, res, next) => {

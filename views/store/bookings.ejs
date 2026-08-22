@@ -10,7 +10,32 @@
       <p class="section-subtitle">Track your upcoming stays and reservation details.</p>
     </div>
   </div>
+  <!-- 🔍 SEARCH BAR CODE -->
+<div style="margin-bottom: 24px; padding: 16px; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+  <form action="/host/bookings" method="GET" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+    
+    <div style="flex-grow: 1; max-width: 400px;">
+      <input 
+        type="text" 
+        name="email" 
+        value="<%= typeof searchEmail !== 'undefined' ? searchEmail : '' %>" 
+        placeholder="Search Guest Email (e.g. daksh@gmail.com)" 
+        style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 6px; outline: none;"
+      >
+    </div>
 
+    <button type="submit" style="background-color: #e11d48; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+      Search
+    </button>
+
+    <% if (typeof searchEmail !== 'undefined' && searchEmail) { %>
+      <a href="/host/bookings" style="padding: 10px 20px; background-color: #94a3b8; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
+        Clear
+      </a>
+    <% } %>
+    
+  </form>
+</div>
   <% if (bookings && bookings.length > 0) { %>
     <section class="mt-8 space-y-6">
       <% bookings.forEach((booking) => { %>
@@ -45,8 +70,7 @@
               <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.checkOut.toDateString() %></p>
             </div>
             <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Nights</span>
-              <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.numberOfNights %></p>
+              <span class="text-sm uppercase tracking-[0.25em] text-slate-500 mt-2">Nights: <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.numberOfNights %></p></span>
             </div>
           </div>
 
