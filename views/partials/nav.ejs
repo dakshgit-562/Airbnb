@@ -26,7 +26,7 @@
           <a href="/host/add-home" class="<%= currentPage === 'addHome' ? 'nav-link active' : 'nav-link' %>">Add Home</a>
           <a href="/host/bookings" class="<%= currentPage === 'host-bookings' ? 'nav-link active' : 'nav-link' %>">
             Host Bookings
-            <% if (user.hasNewManageHost) { %>
+            <% if (user.hasNewHostBookings) { %>
               <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
             <% } %>
           </a>

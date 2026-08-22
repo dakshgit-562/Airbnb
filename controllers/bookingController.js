@@ -89,12 +89,12 @@ exports.createBooking = async (req, res, next) => {
 
   await booking.save();
 
-  //SAFE LOGIC: Guest ka dot ON karein
+  //Guest ka dot ON karein
   await User.findByIdAndUpdate(userId, { hasNewBookings: true }).catch(err => console.log(err));
 
-  // SAFE LOGIC: Host (Makaan maalik) ka dot ON karein
+  //Host ka dot ON karein
   if (home.host) {
-    await User.findByIdAndUpdate(home.host, { hasNewManageHost: true }).catch(err => console.log(err));
+    await User.findByIdAndUpdate(home.host, { hasNewHostBookings: true }).catch(err => console.log(err));
   }
 
   //FIX: Redirect ko /homes kar diya taaki guest ko uski bookings ka DOT dikhe!
@@ -133,11 +133,11 @@ exports.getHostBookings = async (req, res, next) => {
   const hostId = req.session.user._id;
 
   // Database mein OFF karo
-  await User.findByIdAndUpdate(hostId, { hasNewManageHost: false });
+  await User.findByIdAndUpdate(hostId, { hasNewHostBookings: false });
 
   //  DIRECT NAVBAR KA DOT OFF KARO
   if (res.locals.user) {
-      res.locals.user.hasNewManageHost = false;
+      res.locals.user.hasNewHostBookings = false;
   }
 
   const hostHomes = await Home.find({ host: hostId }).select('_id');

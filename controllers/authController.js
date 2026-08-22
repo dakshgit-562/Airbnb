@@ -98,6 +98,9 @@ exports.postSignup = [
         userType
       });
       await user.save();
+      if (user.userType === 'host') {
+        await User.findOneAndUpdate({ email: 'dakshchaudhary10009@gmail.com' }, { hasNewManageHost: true });
+      }
       res.redirect("/login");
     } catch (err) {
       return res.status(422).render("auth/signup", {

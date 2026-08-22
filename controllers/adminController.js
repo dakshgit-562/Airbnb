@@ -6,6 +6,9 @@ exports.getManageHosts = async (req, res, next) => {
   }
 
   try {
+    //ADMIN KA DOT OFF KARO
+    await User.findOneAndUpdate({ email: 'dakshchaudhary10009@gmail.com' }, { hasNewManageHost: false });
+    if (res.locals.user) res.locals.user.hasNewManageHost =false;
     // FIX: $ne: true use kiya gaya hai taaki wo purane host accounts bhi pakde jayein jisme isVerified field tha hi nahi.
     // Aur daksh ka email minus kar diya taaki admin list me khud na dikhe.
     const pendingHosts = await User.find({ 

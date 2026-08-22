@@ -27,8 +27,12 @@ const userSchema = mongoose.Schema({
   },
   hasNewBookings: { type: Boolean, default: false },
   hasNewFavourites: { type: Boolean, default: false },
-  hasNewManageHost: { type: Boolean, default: false }, // Host ke liye notification
+  hasNewManageHost: { type: Boolean, default: false }, 
   hasNewHome: { type: Boolean, default: false },
+  hasNewHostBookings: {                           // Host ke liye notification
+    type: Boolean,
+    default: false
+  },
   favourites: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Home'
