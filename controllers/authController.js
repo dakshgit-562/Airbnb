@@ -164,7 +164,7 @@ exports.postLogin = async (req, res, next) => {
       }
 
       console.log("✅ LOGIN SUCCESS");
-      res.redirect("/homes");
+      res.redirect("/homes?toast=loginSuccess");
     });
 
   } catch (err) {
@@ -212,7 +212,7 @@ exports.googleCallback = (req, res, next) => {
         console.log('❌ SESSION SAVE ERROR (Google OAuth):', err);
         return res.redirect('/login');
       }
-      return res.redirect('/homes');
+      return res.redirect('/homes?toast=loginSuccess');
     });
   } catch (err) {
     console.log('Google callback error:', err);

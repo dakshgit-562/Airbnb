@@ -86,7 +86,7 @@ exports.postAddHome = async (req, res, next) => {
     });
 
     await home.save();
-    res.redirect("/host/host-home-list");
+    res.redirect("/host/host-home-list?toast=hostAdded");
   } catch (err) {
     console.log("Add Home Error: ", err);
     res.redirect("/host/add-home");
@@ -120,7 +120,7 @@ exports.postEditHome = async (req, res, next) => {
     }
       
     await home.save(); 
-    res.redirect("/host/host-home-list");
+    res.redirect("/host/host-home-list?toast=hostUpdated");
   } catch (err) {
     console.log("Error while updating home: ", err);
     res.redirect("/host/host-home-list");
@@ -147,7 +147,7 @@ exports.postDeleteHome = async (req, res, next) => {
     // 2. Home delete karo
     await Home.deleteOne({ _id: homeId, host: hostId });
     
-    res.redirect("/host/host-home-list");
+    res.redirect("/host/host-home-list?toast=hostDeleted");
   } catch (error) {
     console.log("Error while deleting: ", error);
     res.redirect("/host/host-home-list");

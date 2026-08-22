@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Booking = require('../models/booking');
 const Home = require('../models/home');
+const User = require('../models/user'); //User import karna zaruri hai
 
 function parseDate(value) {
   const date = new Date(value);
@@ -88,7 +89,16 @@ exports.createBooking = async (req, res, next) => {
 
   await booking.save();
 
-  return res.redirect('/bookings?toast=bookingSuccess');
+  //SAFE LOGIC: Guest ka dot ON karein
+  await User.findByIdAndUpdate(userId, { hasNewBookings: true }).catch(err => console.log(err));
+
+  // SAFE LOGIC: Host (Makaan maalik) ka dot ON karein
+  if (home.host) {
+    await User.findByIdAndUpdate(home.host, { hasNewManageHost: true }).catch(err => console.log(err));
+  }
+
+  //FIX: Redirect ko /homes kar diya taaki guest ko uski bookings ka DOT dikhe!
+  return res.redirect('/homes?toast=bookingSuccess');
 };
 
 exports.getGuestBookings = async (req, res, next) => {
@@ -97,6 +107,15 @@ exports.getGuestBookings = async (req, res, next) => {
   }
 
   const userId = req.session.user._id;
+
+  // Database mein OFF karo
+  await User.findByIdAndUpdate(userId, { hasNewBookings: false });
+
+  // DIRECT NAVBAR KA DOT OFF KARO
+  if (res.locals.user) {
+      res.locals.user.hasNewBookings = false;
+  }
+
   const bookings = await Booking.find({ user: userId })
     .populate('home')
     .sort({ checkIn: 1 });
@@ -107,7 +126,34 @@ exports.getGuestBookings = async (req, res, next) => {
     bookings,
   });
 };
+exports.getHostBookings = async (req, res, next) => {
+  if (!req.session.isLoggedIn) return res.redirect('/login');
+  if (req.session.user.userType !== 'host') return res.redirect('/');
 
+  const hostId = req.session.user._id;
+
+  // Database mein OFF karo
+  await User.findByIdAndUpdate(hostId, { hasNewManageHost: false });
+
+  //  DIRECT NAVBAR KA DOT OFF KARO
+  if (res.locals.user) {
+      res.locals.user.hasNewManageHost = false;
+  }
+
+  const hostHomes = await Home.find({ host: hostId }).select('_id');
+  const homeIds = hostHomes.map((home) => home._id);
+
+  const bookings = await Booking.find({ home: { $in: homeIds } })
+    .populate('home')
+    .populate('user')
+    .sort({ checkIn: 1 });
+
+  res.render('host/bookings', {
+    pageTitle: 'Host Bookings',
+    currentPage: 'host-bookings',
+    bookings,
+  });
+};
 exports.cancelGuestBooking = async (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect('/login');
@@ -132,31 +178,6 @@ exports.cancelGuestBooking = async (req, res, next) => {
   await booking.save();
 
   return res.redirect('/bookings?toast=bookingCancelled');
-};
-
-exports.getHostBookings = async (req, res, next) => {
-  if (!req.session.isLoggedIn) {
-    return res.redirect('/login');
-  }
-
-  if (req.session.user.userType !== 'host') {
-    return res.redirect('/');
-  }
-
-  const hostId = req.session.user._id;
-  const hostHomes = await Home.find({ host: hostId }).select('_id');
-  const homeIds = hostHomes.map((home) => home._id);
-
-  const bookings = await Booking.find({ home: { $in: homeIds } })
-    .populate('home')
-    .populate('user')
-    .sort({ checkIn: 1 });
-
-  res.render('host/bookings', {
-    pageTitle: 'Host Bookings',
-    currentPage: 'host-bookings',
-    bookings,
-  });
 };
 
 exports.cancelHostBooking = async (req, res, next) => {

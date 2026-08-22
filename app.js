@@ -10,6 +10,9 @@ const MongoStorePkg = require('connect-mongo');
 const MongoStore = MongoStorePkg && MongoStorePkg.default ? MongoStorePkg.default : MongoStorePkg;
 const mongoose = require("mongoose");
 
+// 🚨 SAFE LOGIC: User model ko import kiya taaki navbar ke liye fresh data laa sakein
+const User = require("./models/user");
+
 // 🔐 SECURITY FIX: Hardcoded password removed. Now it strictly uses .env
 const DB_PATH = process.env.MONGODB_URI;
 
@@ -41,13 +44,28 @@ app.use(
 );
 
 // Session Data available globally in EJS
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   console.log("REQUEST:", req.method, req.url);
   console.log("SESSION ID:", req.sessionID);
   console.log("IS LOGGED IN:", req.session.isLoggedIn);
 
   res.locals.isLoggedIn = req.session.isLoggedIn || false;
-  res.locals.user = req.session.user || null;
+  
+  // 🚨 SAFE LOGIC: Database se fresh user nikalna (Notification Dots ke liye)
+  if (req.session.user) {
+    try {
+      const freshUser = await User.findById(req.session.user._id);
+      // Agar DB se fresh user mil gaya toh wo use karo, nahi toh purana session wala
+      res.locals.user = freshUser || req.session.user; 
+    } catch (err) {
+      console.log("Navbar user fetch error (Safely Ignored):", err);
+      // Agar DB me koi error aaye toh website crash na ho, isliye purana session use kar lenge
+      res.locals.user = req.session.user; 
+    }
+  } else {
+    res.locals.user = null;
+  }
+  
   // Make HOST_EMAIL available in EJS templates
   res.locals.HOST_EMAIL = process.env.HOST_EMAIL || '';
 
@@ -85,4 +103,5 @@ mongoose
   .catch((err) => {
     console.log("Error while connecting to Mongo: ", err);
   });
+
 module.exports = app;

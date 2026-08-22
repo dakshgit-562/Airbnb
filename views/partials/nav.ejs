@@ -13,26 +13,53 @@
     </a>
 
     <div class="nav-links">
-      <a href="/" class="<%= currentPage === 'index' || currentPage === 'Home' ? 'nav-link active' : 'nav-link' %>">Home</a>
+      <a href="/" class="<%= currentPage === 'index' || currentPage === 'Home' ? 'nav-link active' : 'nav-link' %>">
+        Home
+        <% if (typeof user !== 'undefined' && user && user.hasNewHome) { %>
+          <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+        <% } %>
+      </a>
+
       <% if (isLoggedIn && user) { %>
         <% if (user.userType === 'host') { %>
           <a href="/host/host-home-list" class="<%= currentPage === 'host-homes' ? 'nav-link active' : 'nav-link' %>">Host Dashboard</a>
           <a href="/host/add-home" class="<%= currentPage === 'addHome' ? 'nav-link active' : 'nav-link' %>">Add Home</a>
-          <a href="/host/bookings" class="<%= currentPage === 'host-bookings' ? 'nav-link active' : 'nav-link' %>">Host Bookings</a>
+          <a href="/host/bookings" class="<%= currentPage === 'host-bookings' ? 'nav-link active' : 'nav-link' %>">
+            Host Bookings
+            <% if (user.hasNewManageHost) { %>
+              <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+            <% } %>
+          </a>
         <% } %>
+
         <% if (user.userType === 'guest') { %>
-          <a href="/favourites" class="<%= currentPage === 'favourites' ? 'nav-link active' : 'nav-link' %>">Favourites</a>
-          <a href="/bookings" class="<%= currentPage === 'bookings' ? 'nav-link active' : 'nav-link' %>">Bookings</a>
+          <a href="/favourites" class="<%= currentPage === 'favourites' ? 'nav-link active' : 'nav-link' %>">
+            Favourites
+            <% if (user.hasNewFavourites) { %>
+              <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+            <% } %>
+          </a>
+
+          <a href="/bookings" class="<%= currentPage === 'bookings' ? 'nav-link active' : 'nav-link' %>">
+            Bookings
+            <% if (user.hasNewBookings) { %>
+              <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+            <% } %>
+          </a>
         <% } %>
-        
+
         <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
-          <a href="/admin/manage-hosts" class="<%= currentPage === 'manage-hosts' ? 'nav-link active' : 'nav-link' %>">Manage Hosts</a>
+          <a href="/admin/manage-hosts" class="<%= currentPage === 'manage-hosts' ? 'nav-link active' : 'nav-link' %>">
+            Manage Hosts
+            <% if (user.hasNewManageHost) { %>
+              <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+            <% } %>
+          </a>
         <% } %>
       <% } %>
     </div>
 
     <div class="nav-actions">
-      <!-- Theme Toggle (Sirf Desktop par dikhega) -->
       <button class="theme-toggle desktop-item text-slate-800 dark:text-slate-100 p-2 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition" type="button" data-theme-toggle aria-label="Toggle dark mode">
         <svg class="dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 1.25rem; height: 1.25rem;">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -54,7 +81,6 @@
         <a href="/signup" class="nav-button secondary desktop-item">Sign Up</a>
         <a href="/login" class="nav-button primary desktop-item">Login</a>
       <% } else { %>
-        <!-- Hi, User aur Logout (Sirf Desktop par dikhega) -->
         <span class="user-greeting desktop-item" aria-label="Signed in user">
           <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
           <span>Hi, <strong><%= user.firstName %></strong></span>
@@ -69,51 +95,78 @@
       <% } %>
     </div>
   </nav>
-
 </header>
 
 <div class="mobile-menu-backdrop" data-mobile-menu-backdrop></div>
-<!-- Kept outside the blurred header so its fixed positioning uses the viewport. -->
+
 <aside class="mobile-menu" data-mobile-menu aria-hidden="true" aria-label="Mobile navigation">
-    <div class="mobile-menu-header">
-      <a href="/" class="nav-brand">
-        <span class="brand-mark">N</span>
-        <span class="font-extrabold">NestStay</span>
-      </a>
-      <button class="mobile-menu-close" type="button" data-mobile-menu-close aria-label="Close menu">
-        <i class="fas fa-times"></i>
-      </button>
+  <div class="mobile-menu-header flex justify-between items-center w-full">
+    <a href="/" class="nav-brand">
+      <span class="brand-mark">N</span>
+      <span class="font-extrabold">NestStay</span>
+    </a>
+    <button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 transition-colors" type="button" data-mobile-menu-close aria-label="Close menu">
+      <i class="fas fa-times text-lg"></i>
+    </button>
+  </div>
+
+  <% if (isLoggedIn && user) { %>
+    <div class="mobile-user">
+      <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
+      <div><span class="mobile-user-label">Signed in as</span><strong><%= user.firstName %></strong></div>
     </div>
+  <% } %>
 
-    <% if (isLoggedIn && user) { %>
-      <div class="mobile-user">
-        <span class="user-avatar" aria-hidden="true"><%= user.firstName ? user.firstName.charAt(0).toUpperCase() : 'U' %></span>
-        <div><span class="mobile-user-label">Signed in as</span><strong><%= user.firstName %></strong></div>
-      </div>
-    <% } %>
+  <nav class="mobile-menu-links">
+    <a href="/" class="nav-link">
+      Home
+      <% if (typeof user !== 'undefined' && user && user.hasNewHome) { %>
+        <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+      <% } %>
+    </a>
 
-    <nav class="mobile-menu-links">
-    <a href="/" class="nav-link">Home</a>
     <% if (isLoggedIn && user) { %>
       <% if (user.userType === 'host') { %>
         <a href="/host/host-home-list" class="nav-link">Host Dashboard</a>
         <a href="/host/add-home" class="nav-link">Add Home</a>
-        <a href="/host/bookings" class="nav-link">Host Bookings</a>
+        <a href="/host/bookings" class="nav-link">
+          Host Bookings
+          <% if (user.hasNewManageHost) { %>
+            <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+          <% } %>
+        </a>
       <% } %>
+
       <% if (user.userType === 'guest') { %>
-        <a href="/favourites" class="nav-link">Favourites</a>
-        <a href="/bookings" class="nav-link">Bookings</a>
+        <a href="/favourites" class="nav-link">
+          Favourites
+          <% if (user.hasNewFavourites) { %>
+            <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+          <% } %>
+        </a>
+
+        <a href="/bookings" class="nav-link">
+          Bookings
+          <% if (user.hasNewBookings) { %>
+            <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+          <% } %>
+        </a>
       <% } %>
+
       <% if (user.email === 'dakshchaudhary10009@gmail.com') { %>
-        <a href="/admin/manage-hosts" class="nav-link">Manage Hosts</a>
+        <a href="/admin/manage-hosts" class="nav-link">
+          Manage Hosts
+          <% if (user.hasNewManageHost) { %>
+            <span style="display: inline-block; width: 8px; height: 8px; background-color: #e11d48; border-radius: 50%; margin-left: 4px; vertical-align: super;"></span>
+          <% } %>
+        </a>
       <% } %>
 
       <button type="button" class="nav-link mobile-theme-toggle" data-mobile-theme-toggle>
-  <!-- आइकॉन को भी डायनामिक बनाने के लिए id दी गई है -->
         <i id="mobile-theme-icon" class="fas fa-moon" aria-hidden="true"></i>
         <span id="mobile-theme-text">Dark Mode</span>
       </button>
-      
+
       <form action="/logout" method="POST" class="mobile-logout">
         <button type="submit" class="nav-button secondary w-full text-left">Logout</button>
       </form>
@@ -121,43 +174,33 @@
       <a href="/signup" class="nav-button secondary w-full mb-2">Sign Up</a>
       <a href="/login" class="nav-button primary w-full">Login</a>
     <% } %>
-    </nav>
-  </aside>
+  </nav>
+</aside>
 
 <div class="toast-root" aria-live="polite" aria-atomic="true"></div>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-  const mobileThemeToggle = document.querySelector('[data-mobile-theme-toggle]');
-  const themeText = document.getElementById('mobile-theme-text');
-  const themeIcon = document.getElementById('mobile-theme-icon');
+    const mobileThemeToggle = document.querySelector('[data-mobile-theme-toggle]');
+    const themeText = document.getElementById('mobile-theme-text');
+    const themeIcon = document.getElementById('mobile-theme-icon');
 
-  // फंक्शन जो चेक करेगा कि डार्क मोड ऑन है या ऑफ
-  function updateThemeUI() {
-    // आमतौर पर डार्क मोड के लिए <html> या <body> टैग पर 'dark' क्लास लगाई जाती है
-    const isDarkMode = document.documentElement.classList.contains('dark');
-
-    if (isDarkMode) {
-      themeText.textContent = 'Light Mode'; // डार्क मोड में Light Mode का ऑप्शन दिखाएं
-      themeIcon.className = 'fas fa-sun';   // सूरज का आइकॉन
-    } else {
-      themeText.textContent = 'Dark Mode';  // लाइट मोड में Dark Mode का ऑप्शन दिखाएं
-      themeIcon.className = 'fas fa-moon';  // चांद का आइकॉन
+    function updateThemeUI() {
+      const isDarkMode = document.documentElement.classList.contains('dark');
+      if (isDarkMode) {
+        themeText.textContent = 'Light Mode';
+        themeIcon.className = 'fas fa-sun';
+      } else {
+        themeText.textContent = 'Dark Mode';
+        themeIcon.className = 'fas fa-moon';
+      }
     }
-  }
 
-  if (mobileThemeToggle) {
-    // जब यूजर बटन पर क्लिक करेगा
-    mobileThemeToggle.addEventListener('click', () => {
-      // यहां आपका पुराना थीम टॉगल करने वाला लॉजिक चलेगा (जैसे डार्क क्लास ऐड/रिमूव करना)
-      // उदाहरण के लिए: document.documentElement.classList.toggle('dark');
-      
-      // थोड़ी देर बाद UI को अपडेट करें ताकि क्लास टॉगल हो चुकी हो
-      setTimeout(updateThemeUI, 50); 
-    });
-  }
+    if (mobileThemeToggle) {
+      mobileThemeToggle.addEventListener('click', () => {
+        setTimeout(updateThemeUI, 50);
+      });
+    }
 
-  // पेज लोड होते ही एक बार UI सेट कर दें
-  updateThemeUI();
-});
+    updateThemeUI();
+  });
 </script>
-

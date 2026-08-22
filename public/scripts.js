@@ -49,13 +49,24 @@ function closeMobileMenu() {
   if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'false');
 }
 
+// 🚨 THE FIX: Sirf is function me inline colors daale hain taaki CSS fail na ho
 function showToast(type, title, description) {
   const root = document.querySelector('.toast-root');
   if (!root) return;
 
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
-  toast.innerHTML = `<strong>${title}</strong><p>${description}</p>`;
+  
+  // JavaScript se direct background color set kar diya (Green for success, Red for error)
+  toast.style.backgroundColor = type === 'success' ? '#10b981' : '#f43f5e';
+  toast.style.color = 'white';
+  toast.style.padding = '16px';
+  toast.style.borderRadius = '8px';
+  toast.style.marginBottom = '10px';
+  toast.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+  toast.style.transition = 'all 0.3s ease-in-out';
+
+  toast.innerHTML = `<strong style="display:block; margin-bottom:4px;">${title}</strong><p style="margin:0; font-size:14px;">${description}</p>`;
   root.appendChild(toast);
 
   setTimeout(() => {
@@ -71,8 +82,8 @@ function parseToastQuery() {
   if (!toastType) return;
 
   const messages = {
-    added: ['Added to favourites', 'Your home has been added to favourites.'],
-    removed: ['Removed from favourites', 'The home has been removed from your favourites.'],
+    favAdded: ['Saved to Favourites ❤️', 'This home has been saved to your collection.'],
+    favRemoved: ['Removed from favourites', 'The home has been removed from your favourites.'],
     hostAdded: ['Property created', 'Your listing is live and ready to book.'],
     hostUpdated: ['Property updated', 'Your home details were saved successfully.'],
     hostDeleted: ['Property removed', 'The home was deleted from your host dashboard.'],
@@ -86,12 +97,30 @@ function parseToastQuery() {
   };
 
   const message = messages[toastType];
+  
   if (message) {
-    showToast('success', message[0], message[1]);
-  }
+    let type = 'success'; // By default sab green (हरा) rahenge
+    
+    // Yahan sirf Negative (Remove/Delete/Cancel) waale daalein
+    const redAlerts = [
+      'favRemoved', 
+      'hostDeleted', 
+      'bookingCancelled', 
+      'bookingConflict', 
+      'checkinPast', 
+      'checkoutAfterCheckin', 
+      'invalidBooking'
+    ];
+    
+    if (redAlerts.includes(toastType)) {
+      type = 'error'; // Isse type 'error' ho jayega aur upar lal rang lag jayega
+    }
 
+    showToast(type, message[0], message[1]);
+  }
+  
   params.delete('toast');
-  const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+  const newUrl = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
   window.history.replaceState(null, '', newUrl);
 }
 
