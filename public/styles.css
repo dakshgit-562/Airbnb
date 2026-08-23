@@ -1054,9 +1054,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .custom-search-container {
     margin-bottom: 24px;
     padding: 16px;
-    background-color: #ffffff;
+    background-color: transparent;
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    border-radius: 12px;
   }
   .custom-search-input {
     flex-grow: 1;
@@ -1068,22 +1068,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     color: #111827;
     min-width: 250px;
   }
-
-  /* 🌙 Dark Mode Styles (Jab HTML me 'dark' class lagti hai) */
-  html.dark .custom-search-container {
-    background-color: #1e293b; /* Dark theme ka background */
-    border-color: #334155;
-  }
-  html.dark .custom-search-input {
-    background-color: #0f172a; /* Input box dark */
-    border-color: #475569;
-    color: #f8fafc; /* Text white */
-  }
-  html.dark .custom-search-input::placeholder {
-    color: #94a3b8;
-  }
   
-  /* 🌟 PRO UI CUSTOM CSS (100% Uniform Colors) */
+  /* 🌙 Search Bar Dark Mode (Pure Dark Match) */
+  html.dark .custom-search-container { border-color: #2d2d2d !important; }
+  html.dark .custom-search-input { background-color: #171717 !important; border-color: #2d2d2d !important; color: #ffffff !important; }
+  html.dark .custom-search-input::placeholder { color: #737373 !important; }
+
+  /* --- Booking Card CSS --- */
   .pro-booking-card {
     display: flex;
     flex-direction: row;
@@ -1113,7 +1104,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: transparent !important; /* Yahan se koi extra color nahi aayega */
+    background: transparent !important;
   }
   .pro-header {
     display: flex;
@@ -1201,18 +1192,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     background-color: #ffe4e6;
   }
 
-  /* 🌙 Dark Mode Styles (PURE DARK GREY - No Blue Tint) */
+  /* 🌙 Dark Mode Styles (Exact Match to Your Image) */
   html.dark .pro-booking-card { 
-    background-color: #1f2937 !important; /* Uniform Dark Grey */
-    border-color: #374151 !important; 
+    background-color: #121212 !important; /* Pure Dark matching your inputs */
+    border-color: #2d2d2d !important; /* Subtle dark border */
   }
-  html.dark .pro-header { border-color: #374151 !important; }
-  html.dark .pro-title-group h3, html.dark .pro-grid-item p.value { color: #f9fafb !important; }
-  html.dark .pro-title-group p, html.dark .pro-grid-item p.label, html.dark .pro-price-group p.label { color: #9ca3af !important; }
-  
+  html.dark .pro-header { border-color: #2d2d2d !important; }
+  html.dark .pro-title-group h3, html.dark .pro-grid-item p.value { color: #ffffff !important; }
+  html.dark .pro-title-group p, html.dark .pro-grid-item p.label, html.dark .pro-price-group p.label { color: #a3a3a3 !important; } /* Neutral grey text */
   html.dark .pro-badge.confirmed { background-color: rgba(16, 185, 129, 0.15) !important; color: #34d399 !important; }
   html.dark .pro-badge.cancelled { background-color: rgba(225, 29, 72, 0.15) !important; color: #fb7185 !important; }
-  
   html.dark .pro-cancel-btn { background-color: rgba(225, 29, 72, 0.1) !important; border-color: rgba(225, 29, 72, 0.3) !important; color: #fb7185 !important; }
   html.dark .pro-cancel-btn:hover { background-color: rgba(225, 29, 72, 0.2) !important; }
   html.dark .pro-price-group p.value { color: #fb7185 !important; }
