@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="field-grid field-grid-2">
+      <div class="field-grid field-grid-2" style="align-items: flex-start;">
         <div class="field-group">
           <label for="rating">Rating</label>
           <input id="rating" name="rating" type="number" step="0.1" value="<%= editing ? home.rating : '' %>" placeholder="4.5" required min="0"/>
@@ -40,7 +40,7 @@
           <label for="image">Photo</label>
           <input id="image" name="image" type="file" accept="image/*" <%= editing ? '' : 'required' %> />
           <% if(editing && home.photoUrl) { %>
-            <img src="<%= home.photoUrl %>" alt="Home Photo" class="mt-2 max-w-full h-auto" />
+            <img src="<%= home.photoUrl %>" alt="Home Photo" class="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; margin-top: 12px; border: 1px solid #cbd5e1; box-shadow: 0 1px 3px rgba(0,0,0,0.1);" />
           <% } %>
         </div>
       </div>
