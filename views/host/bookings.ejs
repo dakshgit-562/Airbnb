@@ -1,105 +1,106 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
-
-<main class="page-shell container mx-auto py-10">
-  <div class="list-heading">
+<main class="page-shell container mx-auto py-10 px-4 sm:px-6 lg:px-8 max-w-7xl">
+  
+  <!-- Page Header -->
+  <div class="list-heading mb-8">
     <div>
-      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Host bookings</p>
-      <h1 class="section-title">Bookings for your properties</h1>
-      <p class="section-subtitle">View guest reservations, manage cancelled stays, and keep your calendar up to date.</p>
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Bookings for your properties</h1>
+      <p class="text-base text-slate-500 dark:text-slate-400">View guest reservations, manage cancelled stays, and keep your calendar up to date.</p>
     </div>
   </div>
-  <!--SEARCH BAR CODE -->
-
-<div class="custom-search-container">
-  <form action="/host/bookings" method="GET" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; max-width: 600px;">
-    
-    <input 
-      type="text" 
-      name="email" 
-      value="<%= typeof searchEmail !== 'undefined' ? searchEmail : '' %>" 
-      placeholder="Search Guest Email (e.g. daksh@gmail.com)" 
-      class="custom-search-input"
-      required
-    >
-    
-    <button type="submit" style="padding: 10px 24px; background-color: #e11d48; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
-      Search
-    </button>
-    
-    <% if (typeof searchEmail !== 'undefined' && searchEmail !== '') { %>
-      <a href="/host/bookings" style="padding: 10px 24px; background-color: #64748b; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; text-align: center;">
-        Clear
-      </a>
-    <% } %>
-    
-  </form>
-</div>
+  
+  <!-- SEARCH BAR CODE -->
+  <div class="custom-search-container">
+    <form action="/host/bookings" method="GET" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; max-width: 600px;">
+      <input 
+        type="text" 
+        name="email" 
+        value="<%= typeof searchEmail !== 'undefined' ? searchEmail : '' %>" 
+        placeholder="Search Guest Email (e.g. daksh@gmail.com)" 
+        class="custom-search-input"
+        required
+      >
+      <button type="submit" style="padding: 10px 24px; background-color: #e11d48; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">
+        Search
+      </button>
+      <% if (typeof searchEmail !== 'undefined' && searchEmail !== '') { %>
+        <a href="/host/bookings" style="padding: 10px 24px; background-color: #64748b; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; text-align: center;">
+          Clear
+        </a>
+      <% } %>
+    </form>
+  </div>
 
   <% if (bookings && bookings.length > 0) { %>
-    <section class="mt-8 space-y-6">
+    <section class="mt-8">
       <% bookings.forEach((booking) => { %>
-        <article class="card p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Guest</p>
-              <h2 class="text-xl font-semibold"><%= booking.user?.firstName %> <%= booking.user?.lastName || '' %></h2>
-              <p class="mt-1 text-slate-600 dark:text-slate-400"><%= booking.user?.email %></p>
-            </div>
-
-            <div class="text-right">
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Status</p>
-              <span class="badge <%= booking.status === 'cancelled' ? 'badge-error' : 'badge' %>"><%= booking.status %></span>
-            </div>
+        <!-- 🌟 Card Starts Here -->
+        <article class="pro-booking-card">
+          
+          <!-- Left Image -->
+          <div class="pro-image-box">
+            <img src="<%= booking.home?.photoUrl || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80' %>" alt="Property Image">
           </div>
 
-          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Property</span>
-              <p class="mt-2 font-semibold"><%= booking.home?.houseName || 'Unknown property' %></p>
+          <!-- Right Content -->
+          <div class="pro-content-box">
+            
+            <!-- Header: Title & Status -->
+            <div class="pro-header">
+              <div class="pro-title-group">
+                <h3><%= booking.home?.houseName || 'Premium Property' %></h3>
+                <p>Guest: <%= booking.user?.firstName %> <%= booking.user?.lastName || '' %> (<%= booking.user?.email %>)</p>
+              </div>
+              <div class="pro-badge <%= booking.status === 'cancelled' ? 'cancelled' : 'confirmed' %>">
+                <%= booking.status %>
+              </div>
             </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-in</span>
-              <p class="mt-2"><%= booking.checkIn.toDateString() %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-out</span>
-              <p class="mt-2"><%= booking.checkOut.toDateString() %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Nights</span>
-              <p class="mt-2"><%= booking.numberOfNights %></p>
-            </div>
-          </div>
 
-          <div class="mt-6 grid gap-4 sm:grid-cols-3">
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Price / night</span>
-              <p class="mt-2">Rs <%= booking.pricePerNight %></p>
+            <!-- Body: Grid Details -->
+            <div class="pro-grid">
+              <div class="pro-grid-item">
+                <p class="label">Check-in</p>
+                <p class="value"><%= booking.checkIn ? booking.checkIn.toDateString() : 'N/A' %></p>
+              </div>
+              <div class="pro-grid-item">
+                <p class="label">Check-out</p>
+                <p class="value"><%= booking.checkOut ? booking.checkOut.toDateString() : 'N/A' %></p>
+              </div>
+              <div class="pro-grid-item">
+                <p class="label">Duration</p>
+                <p class="value"><%= booking.numberOfNights %> Nights</p>
+              </div>
             </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Total price</span>
-              <p class="mt-2 font-semibold">Rs <%= booking.totalPrice %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Booked on</span>
-              <p class="mt-2"><%= booking.createdAt.toDateString() %></p>
-            </div>
-          </div>
 
-          <% if (booking.status !== 'cancelled') { %>
-            <form action="/host/bookings/cancel/<%= booking._id %>" method="POST" class="mt-6">
-              <button type="submit" class="btn-danger">Cancel booking</button>
-            </form>
-          <% } %>
+            <!-- Footer: Price & Action -->
+            <div class="pro-footer">
+              <div class="pro-price-group">
+                <p class="label">Total Price (Rs <%= booking.pricePerNight %>/night)</p>
+                <p class="value">Rs <%= booking.totalPrice %></p>
+              </div>
+              
+              <% if (booking.status !== 'cancelled') { %>
+                <!-- Host ke liye Action Form -->
+                <form action="/host/bookings/cancel/<%= booking._id %>" method="POST" style="margin: 0;">
+                  <button type="submit" class="pro-cancel-btn">Cancel Booking</button>
+                </form>
+              <% } else { %>
+                <div style="padding: 10px 24px; background-color: rgba(100, 116, 139, 0.1); border-radius: 6px;">
+                  <p style="margin: 0; font-size: 14px; font-weight: bold; color: #64748b;">🚫 Booking Cancelled</p>
+                </div>
+              <% } %>
+            </div>
+
+          </div>
         </article>
       <% }); %>
     </section>
   <% } else { %>
-    <div class="empty-state mt-8">
-      <h2>No bookings have been made for your properties yet.</h2>
-      <p>You’ll see reservations here once guests book your listings.</p>
-      <a href="/host/host-home-list" class="btn-primary mt-4 inline-flex justify-center">Manage properties</a>
+    <!-- Empty State (Pure CSS Safe) -->
+    <div style="text-align: center; padding: 60px 20px; background: transparent; border-radius: 12px; border: 1px dashed #4b5563; margin-top: 32px;">
+      <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 8px; color: #f9fafb;">No bookings found</h2>
+      <p style="color: #9ca3af; margin-bottom: 24px;">Looks like you haven't received any bookings for your properties yet.</p>
     </div>
   <% } %>
 </main>

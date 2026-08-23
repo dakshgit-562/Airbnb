@@ -1,85 +1,79 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
 
-<main class="page-shell container mx-auto py-10">
+
+
+<main class="page-shell container mx-auto py-10 px-4 sm:px-6 lg:px-8 max-w-7xl">
   <!-- Page Header -->
-  <div class="list-heading">
-    <div>
-      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Booking dashboard</p>
-      <h1 class="section-title">My bookings</h1>
-      <p class="section-subtitle">Track your upcoming stays and reservation details.</p>
-    </div>
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">My Bookings</h1>
+    <p class="text-base text-slate-500 dark:text-slate-400">Track your upcoming stays, guest details, and reservations.</p>
   </div>
   
   <% if (bookings && bookings.length > 0) { %>
-    <section class="mt-8 space-y-6">
+    <section>
       <% bookings.forEach((booking) => { %>
-        <!-- Booking Card -->
-        <article class="card p-6 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+        <!-- 🌟 Card Starts Here -->
+        <article class="pro-booking-card">
           
-          <!-- Top Section: Property Name & Status -->
-          <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Property</p>
-              <h2 class="text-xl font-semibold text-slate-900 dark:text-white mt-1">
-                <%= booking.home?.houseName || 'Unknown property' %>
-              </h2>
-            </div>
-            <div class="text-left sm:text-right">
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500 mb-2 sm:mb-1">Status</p>
-              <!-- Checking status to apply correct badge color -->
-              <span class="badge <%= booking.status === 'cancelled' ? 'badge-error' : 'badge' %>">
+          <!-- Left Image -->
+          <div class="pro-image-box">
+            <img src="<%= booking.home?.photoUrl || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80' %>" alt="Property Image">
+          </div>
+
+          <!-- Right Content -->
+          <div class="pro-content-box">
+            
+            <!-- Header: Title & Status -->
+            <div class="pro-header">
+              <div class="pro-title-group">
+                <h3><%= booking.home?.houseName || 'Premium Property' %></h3>
+                <p>Guest: <%= booking.user?.firstName %> <%= booking.user?.lastName || '' %> (<%= booking.user?.email %>)</p>
+              </div>
+              <div class="pro-badge <%= booking.status === 'cancelled' ? 'cancelled' : 'confirmed' %>">
                 <%= booking.status %>
-              </span>
+              </div>
             </div>
-          </div>
 
-          <!-- Middle Section: Check-in / Check-out / Nights -->
-          <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-in</span>
-              <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.checkIn.toDateString() %></p>
+            <!-- Body: Grid Details -->
+            <div class="pro-grid">
+              <div class="pro-grid-item">
+                <p class="label">Check-in</p>
+                <p class="value"><%= booking.checkIn ? booking.checkIn.toDateString() : 'N/A' %></p>
+              </div>
+              <div class="pro-grid-item">
+                <p class="label">Check-out</p>
+                <p class="value"><%= booking.checkOut ? booking.checkOut.toDateString() : 'N/A' %></p>
+              </div>
+              <div class="pro-grid-item">
+                <p class="label">Duration</p>
+                <p class="value"><%= booking.numberOfNights %> Nights</p>
+              </div>
             </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Check-out</span>
-              <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.checkOut.toDateString() %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500 mt-2">Nights: <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.numberOfNights %></p></span>
-            </div>
-          </div>
 
-          <!-- Bottom Section: Pricing & Booking Date -->
-          <div class="mt-6 grid gap-4 sm:grid-cols-3">
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Price / night</span>
-              <p class="mt-2 font-medium text-slate-900 dark:text-slate-200">Rs <%= booking.pricePerNight %></p>
+            <!-- Footer: Price & Action -->
+            <div class="pro-footer">
+              <div class="pro-price-group">
+                <p class="label">Total Price (Rs <%= booking.pricePerNight %>/night)</p>
+                <p class="value">Rs <%= booking.totalPrice %></p>
+              </div>
+              
+              <% if (booking.status !== 'cancelled') { %>
+                <form action="/host/bookings/cancel/<%= booking._id %>" method="POST" style="margin: 0;">
+                  <button type="submit" class="pro-cancel-btn">Cancel Booking</button>
+                </form>
+              <% } %>
             </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Total price</span>
-              <p class="mt-2 font-semibold text-lg text-slate-900 dark:text-white">Rs <%= booking.totalPrice %></p>
-            </div>
-            <div>
-              <span class="text-sm uppercase tracking-[0.25em] text-slate-500">Booked on</span>
-              <p class="mt-2 font-medium text-slate-900 dark:text-slate-200"><%= booking.createdAt.toDateString() %></p>
-            </div>
-          </div>
 
-          <!-- Action Button -->
-          <% if (booking.status !== 'cancelled') { %>
-            <form action="/bookings/cancel/<%= booking._id %>" method="POST" class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800">
-              <button type="submit" class="btn-danger">Cancel booking</button>
-            </form>
-          <% } %>
+          </div>
         </article>
-      <% }) %>
+      <% }); %>
     </section>
   <% } else { %>
     <!-- Empty State -->
-    <div class="empty-state mt-8">
-      <h2>You haven't made any bookings yet.</h2>
-      <p>When you book a stay, your trip details will appear here with easy access to your itinerary.</p>
-      <a href="/homes" class="btn-primary mt-4 inline-flex justify-center">Browse homes</a>
+    <div style="text-align: center; padding: 60px 20px; background: transparent; border-radius: 12px; border: 1px dashed #4b5563;">
+      <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 8px; color: #f9fafb;">No bookings yet</h2>
+      <p style="color: #9ca3af; margin-bottom: 24px;">You’ll see guest reservations here once they book your properties.</p>
     </div>
   <% } %>
 </main>
