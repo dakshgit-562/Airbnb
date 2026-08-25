@@ -18,13 +18,17 @@ if (googleConfigured) {
     clientID: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
     callbackURL: CALLBACK_URL,
-    proxy: true
-  }, async (accessToken, refreshToken, profile, done) => {
+    proxy: true,
+    passReqToCallback: true // 🚨 1. YE ADD KARO (Taki req access ho sake)
+  }, async (req, accessToken, refreshToken, profile, done) => { // 🚨 2. YAHAN 'req' ADD KARO
     try {
       const email = profile.emails && profile.emails[0] && profile.emails[0].value;
       if (!email) return done(new Error('No email found in Google profile'));
 
       let user = await User.findOne({ email });
+      
+      // 🚨 3. Bahaar se aaya hua role check karo
+      const role = (req.session && req.session.requestedRole) ? req.session.requestedRole : 'guest';
 
       if (!user) {
         user = new User({
@@ -32,10 +36,35 @@ if (googleConfigured) {
           lastName: (profile.name && profile.name.familyName) || '',
           email,
           password: undefined,
-          userType: email === HOST_EMAIL ? 'host' : 'guest',
+          userType: role, //Ab default 'guest' nahi, user ki choice aayegi
+          // isVerified: role === 'host' ? false : true, // Agar host ko approval chahiye, to ye line uncomment kar lena aapke schema ke hisaab se
           googleId: profile.id
         });
         await user.save();
+      
+  
+  // passport.use(new GoogleStrategy({
+  //   clientID: CLIENT_ID,
+  //   clientSecret: CLIENT_SECRET,
+  //   callbackURL: CALLBACK_URL,
+  //   proxy: true
+  // }, async (accessToken, refreshToken, profile, done) => {
+  //   try {
+  //     const email = profile.emails && profile.emails[0] && profile.emails[0].value;
+  //     if (!email) return done(new Error('No email found in Google profile'));
+
+  //     let user = await User.findOne({ email });
+
+  //     if (!user) {
+  //       user = new User({
+  //         firstName: (profile.name && profile.name.givenName) || email.split('@')[0],
+  //         lastName: (profile.name && profile.name.familyName) || '',
+  //         email,
+  //         password: undefined,
+  //         userType: email === HOST_EMAIL ? 'host' : 'guest',
+  //         googleId: profile.id
+  //       });
+  //       await user.save();
       } else {
         // Ensure googleId and host role are updated if necessary
         let needsSave = false;
