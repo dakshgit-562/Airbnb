@@ -1,72 +1,91 @@
 <%- include('../partials/head') %>
-    <%- include('../partials/nav') %>
-    <main class="page-shell container mx-auto py-12">
-      <section class="max-w-2xl mx-auto rounded-[1.75rem] bg-slate-50 dark:bg-slate-900 shadow-[0_24px_64px_rgba(15,23,42,0.08)] p-10">
-        <div class="text-center mb-8 mt-4">
-          <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">Welcome to NestStay</h1>
-          <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">
-            Log in to book your next getaway, manage upcoming reservations, and explore your saved favorites.
-          </p>
-        </div>
+<%- include('../partials/nav') %>
 
-        <form action="/login" method="POST" class="space-y-5">
-          <%- include('../partials/errors') %>
-          <div class="field-group">
-            <label for="email">Email address</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" value="<%= oldInput.email ? oldInput.email : '' %>" required />
-          </div>
+<!--Pure CSS Magic to disable Google button until a radio is selected -->
+<style>
+  /* Form is 'invalid' because required radio is not checked */
+  .google-auth-form:invalid .google-btn {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+  
+  /* Form becomes 'valid' as soon as user clicks Guest or Host */
+  .google-auth-form:valid .google-btn {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+</style>
 
-          <div class="field-group">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password" placeholder="Enter your password" required />
-          </div>
+<main class="page-shell container mx-auto py-12">
+  <section class="max-w-2xl mx-auto rounded-[1.75rem] bg-slate-50 dark:bg-slate-900 shadow-[0_24px_64px_rgba(15,23,42,0.08)] p-10">
+    <div class="text-center mb-8 mt-4">
+      <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">Welcome to NestStay</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-sm md:text-base max-w-md mx-auto leading-relaxed">
+        Log in to book your next getaway, manage upcoming reservations, and explore your saved favorites.
+      </p>
+    </div>
 
+    <!-- 1️⃣ STANDARD LOGIN FORM (Email/Password) -->
+    <form action="/login" method="POST" class="space-y-5">
+      <%- include('../partials/errors') %>
+      
+      <div class="field-group">
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" value="<%= typeof oldInput !== 'undefined' && oldInput.email ? oldInput.email : '' %>" required />
+      </div>
 
-          <button type="submit" class="btn-primary w-full">Sign in</button>
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" required />
+      </div>
 
+      <button type="submit" class="btn-primary w-full">Sign in</button>
+    </form>
 
-          <div class="flex items-center justify-center gap-3 text-slate-400">
-            <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700 "></span>
-            <span class="text-sm mt-2">or</span>
-            <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
-          </div>
+    <!-- ➖ DIVIDER ➖ -->
+    <div class="flex items-center justify-center gap-3 text-slate-400 my-6">
+      <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
+      <span class="text-sm">or</span>
+      <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
+    </div>
 
-
-        <fieldset class="field-group p-5 rounded-3xl  border-slate-200 dark:border-slate-800 bg-transparent mt-2">
-        <legend class="text-sm font-semibold text-slate-600 dark:text-slate-300 px-2">I want to log in as::</legend>
+    <!-- 2️⃣ GOOGLE LOGIN FORM (No JS, Pure CSS Magic) -->
+    <form action="/auth/google" method="GET" class="space-y-5 google-auth-form">
+      
+      <fieldset class="field-group p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-transparent mt-2">
+        <legend class="text-sm font-semibold text-slate-600 dark:text-slate-300 px-2">I want to log in as:</legend>
         <div class="mt-4 flex flex-col sm:flex-row gap-4">
-          <!-- FIX: label se bg-white hata kar safe classes lagayi hain -->
-          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl  border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
-            <input type="radio" name="userType" value="guest" class="form-radio text-accent" <%= oldInput.userType === 'guest' ? 'checked' : '' %> />
+          
+          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
+            <!-- 🚨 REQUIRED attribute is the secret here -->
+            <input type="radio" name="userType" value="guest" class="form-radio text-accent" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'guest' ? 'checked' : '' %> />
             <span class="text-slate-900 dark:text-white font-medium">Guest</span>
           </label>
-          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl  border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
-            <input type="radio" name="userType" value="host" class="form-radio text-accent" <%= oldInput.userType === 'host' ? 'checked' : '' %> />
+          
+          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
+            <!-- 🚨 REQUIRED attribute is the secret here -->
+            <input type="radio" name="userType" value="host" class="form-radio text-accent" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'host' ? 'checked' : '' %> />
             <span class="text-slate-900 dark:text-white font-medium">Host</span>
           </label>
+          
         </div>
       </fieldset>
 
-        <a id="google-login-btn" href="/auth/google?userType=guest" class="btn-secondary w-full flex items-center justify-center gap-3">
-            <i class="fab fa-google text-lg mr-2"></i>
-            Continue with Google
-        </a>
-        </form>
+      <!-- 🚨 This button replaces the <a> tag -->
+      <button type="submit" class="btn-secondary w-full flex items-center justify-center gap-3 google-btn">
+        <i class="fab fa-google text-lg mr-2"></i>
+        Continue with Google
+      </button>
+      
+    </form>
 
-        <p class="mt-6 text-center text-slate-500 dark:text-slate-400">Don’t have an account? <a href="/signup" class="text-accent hover:underline">Sign up</a></p>
-      </section>
-    </main>
-  </body>
+    <p class="mt-6 text-center text-slate-500 dark:text-slate-400">Don’t have an account? <a href="/signup" class="text-accent hover:underline">Sign up</a></p>
+  </section>
+</main>
+
+
+
+</body>
 </html>
-
-<script>
-  // Taki Guest/Host Google tak jaye
-        const radioButtons = document.querySelectorAll('input[name="userType"]');
-        const googleBtn = document.getElementById('google-login-btn');
-        
-        radioButtons.forEach(radio => {
-          radio.addEventListener('change', (e) => {
-            googleBtn.href = `/auth/google?userType=${e.target.value}`;
-          });
-        });
-</script>
