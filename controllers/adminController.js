@@ -6,21 +6,36 @@ exports.getManageHosts = async (req, res, next) => {
   }
 
   try {
-    //ADMIN KA DOT OFF KARO
+    // ADMIN KA DOT OFF KARO
     await User.findOneAndUpdate({ email: 'dakshchaudhary10009@gmail.com' }, { hasNewManageHost: false });
-    if (res.locals.user) res.locals.user.hasNewManageHost =false;
-    // FIX: $ne: true use kiya gaya hai taaki wo purane host accounts bhi pakde jayein jisme isVerified field tha hi nahi.
-    // Aur daksh ka email minus kar diya taaki admin list me khud na dikhe.
-    const pendingHosts = await User.find({ 
+    if (res.locals.user) res.locals.user.hasNewManageHost = false;
+
+    // URL se email nikalna (Booking style)
+    const searchEmail = req.query.email;
+
+    // Default Filter (Sirf hosts lane hain, aur Admin khud na dikhe)
+    let hostFilter = { 
       userType: 'host', 
-      isVerified: { $ne: true },
-      email: { $ne: 'dakshchaudhary10009@gmail.com' }
-    });
+      email: { $ne: 'dakshchaudhary10009@gmail.com' } 
+    };
+
+    // Agar search box mein email dala gaya hai:
+    if (searchEmail) {
+      hostFilter.email = { 
+        $ne: 'dakshchaudhary10009@gmail.com', 
+        $regex: searchEmail, // $regex se half spelling bhi kaam karegi
+        $options: 'i' 
+      };
+    }
+
+    // Database se data lana
+    const pendingHosts = await User.find(hostFilter).sort({ isVerified: 1, createdAt: -1 });
     
     res.render('admin/manage-hosts', {
       pageTitle: 'Manage Hosts',
       currentPage: 'manage-hosts',
-      pendingHosts
+      pendingHosts,
+      searchEmail // Taki search box me likha hua text gayab na ho
     });
   } catch (err) {
     console.log("Error fetching pending hosts: ", err);
