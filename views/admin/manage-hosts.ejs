@@ -3,74 +3,75 @@
 
 <main class="page-shell container mx-auto py-10 px-4">
   
-  <!-- 🌟 Header with Clear All Button -->
-  <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-    <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Manage Hosts</h1>
+  <!-- 🌟 Header with Clear All Button (100% Pure CSS Layout) -->
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem;">
+    <h1 style="font-size: 1.875rem; font-weight: bold; color: var(--text); margin: 0;">
+      Manage Hosts
+    </h1>
     
     <% if (pendingHosts && pendingHosts.length > 0) { %>
-      <form action="/admin/clear-all-hosts" method="POST">
-        <button type="submit" class="btn-danger" onclick="return confirm('Are you sure you want to clear ALL pending host requests?')">
+      <form action="/admin/clear-all-hosts" method="POST" style="margin: 0;">
+        <button type="submit" class="btn-danger" style="padding: 0.6rem 1.5rem; border-radius: 0.5rem; font-weight: 600;" onclick="return confirm('Are you sure you want to clear ALL pending host requests?')">
           Clear All Requests
         </button>
       </form>
     <% } %>
   </div>
 
-  <!-- 🔍 Booking Style Backend Search Bar (No Script) -->
-  <form action="/admin/manage-hosts" method="GET" class="custom-search-container flex items-center gap-3 mb-6">
-    <i class="fas fa-search text-slate-400"></i>
-    <!-- name="email" set kiya hai aur searchEmail ki value yahan aayegi -->
+  <!-- 🔍 Booking Style Backend Search Bar (No Script, Pure CSS) -->
+  <form action="/admin/manage-hosts" method="GET" class="custom-search-container" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+    <i class="fas fa-search" style="color: var(--muted);"></i>
     <input type="text" name="email" value="<%= typeof searchEmail !== 'undefined' ? searchEmail : '' %>" 
-           class="custom-search-input w-full" placeholder="Search host by email" />
-    <button type="submit" style="display: none;">Search</button> <!-- Hidden button for Enter key -->
+           class="custom-search-input" style="width: 100%; flex-grow: 1;" placeholder="Search host by email and hit Enter..." />
+    <button type="submit" style="display: none;">Search</button> 
   </form>
 
-  <!-- 📋 Host Table -->
+  <!-- 📋 Host Table (100% Pure CSS) -->
   <% if (pendingHosts && pendingHosts.length > 0) { %>
-    <div class="bg-white dark:bg-slate-800 shadow-md rounded-lg overflow-x-auto border border-slate-200 dark:border-slate-700">
-      <table class="w-full text-left border-collapse min-w-[600px]">
+    <div class="admin-table-wrap" style="background-color: var(--surface); border: 1px solid var(--border); border-radius: 1rem; overflow-x: auto; box-shadow: var(--card-shadow);">
+      <table style="width: 100%; border-collapse: collapse; text-align: left; min-width: 600px;">
         
         <thead>
-          <tr class="bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
-            <th class="p-4 font-bold">Name & Status</th>
-            <th class="p-4 font-bold">Email</th>
-            <th class="p-4 text-right font-bold">Action</th>
+          <tr style="background-color: var(--surface-muted); color: var(--text); border-bottom: 1px solid var(--border);">
+            <th style="padding: 1rem; font-weight: bold;">Name & Status</th>
+            <th style="padding: 1rem; font-weight: bold;">Email</th>
+            <th style="padding: 1rem; font-weight: bold; text-align: right;">Action</th>
           </tr>
         </thead>
         
-        <tbody id="hostTableBody">
+        <tbody>
           <% pendingHosts.forEach(host => { %>
-            <tr class="host-row border-b border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 transition hover:bg-slate-50 dark:hover:bg-slate-700/50">
+            <tr style="border-bottom: 1px solid var(--border); color: var(--text); background-color: var(--surface);">
               
-              <td class="p-4 font-semibold">
+              <td style="padding: 1rem; font-weight: 600; line-height: 1.4;">
                 <%= host.firstName %> <%= host.lastName %> <br>
                 <!-- Status Badges -->
                 <% if (host.isVerified) { %>
-                  <span class="inline-block mt-1 text-[11px] font-bold bg-green-100 text-green-700 px-2 py-1 rounded-full dark:bg-green-900/30 dark:text-green-400">APPROVED</span>
+                  <span style="display: inline-block; margin-top: 0.3rem; font-size: 0.7rem; background-color: rgba(16, 185, 129, 0.15); color: #10B981; padding: 0.2rem 0.6rem; border-radius: 999px;">APPROVED</span>
                 <% } else { %>
-                  <span class="inline-block mt-1 text-[11px] font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded-full dark:bg-amber-900/30 dark:text-amber-400">PENDING</span>
+                  <span style="display: inline-block; margin-top: 0.3rem; font-size: 0.7rem; background-color: rgba(245, 158, 11, 0.15); color: #F59E0B; padding: 0.2rem 0.6rem; border-radius: 999px;">PENDING</span>
                 <% } %>
               </td>
               
-              <td class="host-email p-4"><%= host.email %></td>
+              <td style="padding: 1rem;"><%= host.email %></td>
               
-              <td class="p-4 text-right space-x-2">
+              <td style="padding: 1rem; text-align: right; white-space: nowrap;">
                 
                 <!-- Approve Button (Sirf Pending ke liye) -->
                 <% if (!host.isVerified) { %>
-                  <form action="/admin/approve-host" method="POST" class="inline-block">
+                  <form action="/admin/approve-host" method="POST" style="display: inline-block; margin-right: 0.5rem;">
                     <input type="hidden" name="hostId" value="<%= host._id %>">
-                    <button type="submit" class="btn-primary px-4 py-2" style="min-height: 2.2rem; border-radius: 0.5rem;">Approve</button>
+                    <button type="submit" class="btn-primary" style="padding: 0.4rem 1rem; min-height: 0; border-radius: 0.4rem;">Approve</button>
                   </form>
                 <% } %>
                 
                 <!-- Cancel / Revoke Button (Dono ke liye, Error-Free Logic) -->
-                <form action="/admin/reject-host" method="POST" class="inline-block">
+                <form action="/admin/reject-host" method="POST" style="display: inline-block;">
                   <input type="hidden" name="hostId" value="<%= host._id %>">
                   <% if (host.isVerified) { %>
-                    <button type="submit" class="btn-danger px-4 py-2" style="min-height: 2.2rem; border-radius: 0.5rem;" onclick="return confirm('Are you sure you want to revoke access for this host?')">Revoke Access</button>
+                    <button type="submit" class="btn-danger" style="padding: 0.4rem 1rem; min-height: 0; border-radius: 0.4rem;" onclick="return confirm('Are you sure you want to revoke access for this host?')">Revoke Access</button>
                   <% } else { %>
-                    <button type="submit" class="btn-danger px-4 py-2" style="min-height: 2.2rem; border-radius: 0.5rem;" onclick="return confirm('Are you sure you want to reject this request?')">Cancel</button>
+                    <button type="submit" class="btn-danger" style="padding: 0.4rem 1rem; min-height: 0; border-radius: 0.4rem;" onclick="return confirm('Are you sure you want to reject this request?')">Cancel</button>
                   <% } %>
                 </form>
 
@@ -83,9 +84,9 @@
     </div>
   <% } else { %>
     <!-- Empty State (No Hosts / Search Not Found) -->
-    <div class="empty-state mt-6">
-      <h2 class="text-xl font-bold dark:text-white">No Hosts Found</h2>
-      <p class="text-slate-500 dark:text-slate-400">We couldn't find any hosts matching your search, or the list is empty.</p>
+    <div style="text-align: center; padding: 3rem 1rem; border: 1px dashed var(--border); border-radius: 1rem; margin-top: 1rem; background-color: var(--surface);">
+      <h2 style="font-size: 1.25rem; font-weight: bold; color: var(--text); margin-bottom: 0.5rem;">No Hosts Found</h2>
+      <p style="color: var(--muted); font-size: 1rem; margin: 0;">We couldn't find any hosts matching your search, or the list is empty.</p>
     </div>
   <% } %>
 </main>
