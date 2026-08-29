@@ -10,10 +10,10 @@ const MongoStorePkg = require('connect-mongo');
 const MongoStore = MongoStorePkg && MongoStorePkg.default ? MongoStorePkg.default : MongoStorePkg;
 const mongoose = require("mongoose");
 
-// 🚨 SAFE LOGIC: User model ko import kiya taaki navbar ke liye fresh data laa sakein
+
 const User = require("./models/user");
 
-// 🔐 SECURITY FIX: Hardcoded password removed. Now it strictly uses .env
+
 const DB_PATH = process.env.MONGODB_URI;
 
 const storeRouter = require("./routes/storeRouter");
@@ -51,7 +51,7 @@ app.use(async (req, res, next) => {
 
   res.locals.isLoggedIn = req.session.isLoggedIn || false;
   
-  // 🚨 SAFE LOGIC: Database se fresh user nikalna (Notification Dots ke liye)
+  //Database se fresh user nikalna (Notification Dots ke liye)
   if (req.session.user) {
     try {
       const freshUser = await User.findById(req.session.user._id);

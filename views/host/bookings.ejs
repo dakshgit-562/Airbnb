@@ -2,7 +2,7 @@
 <%- include('../partials/nav') %>
 <main class="page-shell container mx-auto py-10 px-4 sm:px-6 lg:px-8 max-w-7xl">
   
-  <!-- Page Header -->
+  
   <div class="list-heading mb-8">
     <div>
       <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Bookings for your properties</h1>
@@ -10,7 +10,7 @@
     </div>
   </div>
   
-  <!-- SEARCH BAR CODE -->
+  
   <div class="custom-search-container">
     <form action="/host/bookings" method="GET" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; max-width: 600px;">
       <input 
@@ -35,7 +35,7 @@
   <% if (bookings && bookings.length > 0) { %>
     <section class="mt-8">
       <% bookings.forEach((booking) => { %>
-        <!-- 🌟 Card Starts Here -->
+       
         <article class="pro-booking-card">
           
           <!-- Left Image -->
@@ -81,7 +81,7 @@
               </div>
               
               <% if (booking.status !== 'cancelled') { %>
-                <!-- Host ke liye Action Form -->
+               
                 <form action="/host/bookings/cancel/<%= booking._id %>" method="POST" style="margin: 0;">
                   <button type="submit" class="pro-cancel-btn">Cancel Booking</button>
                 </form>
@@ -97,7 +97,7 @@
       <% }); %>
     </section>
   <% } else { %>
-    <!-- Empty State (Pure CSS Safe) -->
+   
     <div style="text-align: center; padding: 60px 20px; background: transparent; border-radius: 12px; border: 1px dashed #4b5563; margin-top: 32px;">
       <h2 style="font-size: 24px; font-weight: bold; margin-bottom: 8px; color: #f9fafb;">No bookings found</h2>
       <p style="color: #9ca3af; margin-bottom: 24px;">Looks like you haven't received any bookings for your properties yet.</p>

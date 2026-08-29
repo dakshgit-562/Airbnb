@@ -9,8 +9,7 @@
     pointer-events: none;
     cursor: not-allowed;
   }
-  
-  /* Form becomes 'valid' as soon as user clicks Guest or Host */
+
   .google-auth-form:valid .google-btn {
     opacity: 1;
     pointer-events: auto;
@@ -27,7 +26,7 @@
       </p>
     </div>
 
-    <!-- 1️⃣ STANDARD LOGIN FORM (Email/Password) -->
+  
     <form action="/login" method="POST" class="space-y-5">
       <%- include('../partials/errors') %>
       
@@ -51,36 +50,36 @@
       <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
     </div>
 
-    <!--GOOGLE LOGIN FORM (No JS, Pure CSS Magic) -->
     <form action="/auth/google" method="GET" class="space-y-5 google-auth-form">
       
-      <fieldset class="field-group p-5 rounded-3xl border border-slate-200 dark:border-slate-800 bg-transparent mt-2">
-        <legend class="text-sm font-semibold text-slate-600 dark:text-slate-300 px-2">I want to log in as:</legend>
-        <div class="mt-4 flex flex-col sm:flex-row gap-4">
+      
+      <div style="border: 1px solid var(--border); border-radius: 1.25rem; padding: 1.25rem; background: transparent;">
+        <p style="font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; text-align: left;">
+          I want to log in as:
+        </p>
+        
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           
-          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
-         
-            <input type="radio" name="userType" value="guest" class="form-radio text-accent" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'guest' ? 'checked' : '' %> />
-            <span class="text-slate-900 dark:text-white font-medium">Guest</span>
+          <label style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.85rem; cursor: pointer; transition: all 0.2s; background: transparent;" class="hover:bg-slate-100 dark:hover:bg-slate-800">
+            <input type="radio" name="userType" value="guest" style="accent-color: var(--accent); width: 1.2rem; height: 1.2rem; cursor: pointer;" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'guest' ? 'checked' : '' %> />
+            <span style="font-weight: 600; color: var(--text);">Guest</span>
           </label>
           
-          <label class="flex-1 inline-flex items-center gap-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 transition p-4 cursor-pointer">
-           
-            <input type="radio" name="userType" value="host" class="form-radio text-accent" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'host' ? 'checked' : '' %> />
-            <span class="text-slate-900 dark:text-white font-medium">Host</span>
+          <label style="display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.85rem; cursor: pointer; transition: all 0.2s; background: transparent;" class="hover:bg-slate-100 dark:hover:bg-slate-800">
+            <input type="radio" name="userType" value="host" style="accent-color: var(--accent); width: 1.2rem; height: 1.2rem; cursor: pointer;" required <%= typeof oldInput !== 'undefined' && oldInput.userType === 'host' ? 'checked' : '' %> />
+            <span style="font-weight: 600; color: var(--text);">Host</span>
           </label>
           
         </div>
-      </fieldset>
+      </div>
 
-    
-      <button type="submit" class="btn-secondary w-full flex items-center justify-center gap-3 google-btn">
+      <button type="submit" class="btn-secondary w-full flex items-center justify-center gap-3 google-btn" style="min-height: 3.2rem; border-radius: 1rem; margin-top: 1.25rem;">
         <i class="fab fa-google text-lg mr-2"></i>
         Continue with Google
       </button>
       
     </form>
-
     <p class="mt-6 text-center text-slate-500 dark:text-slate-400">Don’t have an account? <a href="/signup" class="text-accent hover:underline">Sign up</a></p>
   </section>
 </main>

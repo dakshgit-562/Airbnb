@@ -35,9 +35,6 @@
           </div>
         </div>
 
-        <!-- Rating Badge aligned to top -->
-         <!-- Rating Badge aligned to top (FIXED) -->
-<!-- Rating Badge: Perfect Pill Shape with Permanent Rose Color -->
           <span style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; background-color: rgba(225, 29, 72, 0.15); color: #fb7185; padding: 4px 12px; border-radius: 9999px; font-weight: bold; font-size: 0.875rem; height: 32px; white-space: nowrap; margin-top: 4px;">
             <i class="fas fa-star" style="color: #e11d48; font-size: 0.8rem;"></i>
             <%= home.rating %>
@@ -102,7 +99,7 @@
         <div class="detail-summary booking-card bg-white p-6 rounded-xl shadow-lg border border-slate-200">
           <h3 class="text-xl font-semibold mb-3">Booking summary</h3>
 
-          <!-- ALREADY BOOKED DATES ALERT (Naya Logic) -->
+         
           <% if (typeof bookings !== 'undefined' && bookings.length > 0) { %>
   <div class="mb-5 p-4 rounded-lg" style="background-color: #fff1f2; border: 1px solid #fecdd3;">
     
@@ -158,7 +155,7 @@
             </button>
           </form>
 
-          <!-- JavaScript for Price Calculation -->
+         
           <script>
             (function () {
               const pricePerNight = Number('<%= home.price %>');
@@ -194,7 +191,7 @@
           </script>
         </div>
       <% } else if (!isLoggedIn) { %>
-  <!-- 🚨 FIXED: Pure CSS Theme Matching -->
+ 
               <div style="background-color: var(--surface, #1e1e24); border: 1px solid var(--border, #333); padding: 2rem; border-radius: 1rem; text-align: center; margin-top: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);">
                 
                 <h3 style="font-size: 1.3rem; font-weight: bold; color: var(--text, #ffffff); margin-bottom: 0.5rem; margin-top: 0;">

@@ -37,25 +37,25 @@
     <div class="card-grid mt-8">
       <% registeredHomes.forEach(home => { %>
         
-        <!-- पूरे कार्ड को Anchor Tag में रैप कर दिया गया है -->
+       
         <a href="/homes/<%= home._id %>" style="text-decoration: none; color: inherit; display: block;">
           <article class="property-card" style="cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 10px 15px -3px rgb(0 0 0 / 0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
             <div class="card-image-wrap">
               <img src="<%= home.photoUrl || '/images/OIP4.jpg' %>" alt="<%= home.houseName %>" />
             </div>
             <div class="card-content">
-  <!-- Location Badge -->
+ 
               <p class="badge-pill" style="margin-bottom: 8px;"><%= home.location %></p>
               
-              <!-- 🚨 PURE CSS FIX: Guarantee 100% ek hi line mein aayega -->
+             
               <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%;">
                 
-                <!-- House Name (Left side) -->
+               
                   <h3 class="card-title" style="margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   <%= home.houseName %>
                   </h3>
                 
-                <!-- Rating (Right side) -->
+               
                   <span style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; background-color: rgba(225, 29, 72, 0.15); color: #fb7185; padding: 4px 12px; border-radius: 9999px; font-weight: bold; font-size: 0.875rem; height: 32px; white-space: nowrap; margin-top: 4px;">
              <i class="fas fa-star" style="color: #e11d48; font-size: 0.8rem;"></i>
             <%= home.rating %>
