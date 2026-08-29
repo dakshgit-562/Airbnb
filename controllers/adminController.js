@@ -1,5 +1,5 @@
 const User = require('../models/user');
-
+const Home=require('../models/home');
 exports.getManageHosts = async (req, res, next) => {
   if (!req.session.isLoggedIn || req.session.user.email !== 'dakshchaudhary10009@gmail.com') {
     return res.redirect('/');
@@ -57,8 +57,7 @@ exports.postApproveHost = async (req, res, next) => {
     console.log("Error approving host: ", err);
     res.redirect('/admin/manage-hosts');
   }
-};
-// सिंगल रिक्वेस्ट को कैंसिल करने के लिए (होस्ट को वापस गेस्ट बना देगा)
+}
 exports.postRejectHost = async (req, res, next) => {
   if (!req.session.isLoggedIn || req.session.user.email !== 'dakshchaudhary10009@gmail.com') {
     return res.redirect('/');
@@ -66,17 +65,21 @@ exports.postRejectHost = async (req, res, next) => {
 
   try {
     const hostId = req.body.hostId;
-    // पेंडिंग लिस्ट से हटाकर वापस गेस्ट बना दिया
-    await User.findByIdAndUpdate(hostId, { userType: 'guest' }); 
-    console.log("Host request cancelled and changed to guest: ", hostId);
-    res.redirect('/admin/manage-hosts');
+    
+    
+    await Home.deleteMany({ host: hostId }); 
+
+    
+    await User.findByIdAndDelete(hostId); 
+    
+    console.log("Host and their properties deleted permanently: ", hostId);
+    res.redirect('/admin/manage-hosts?toast=adminHostRemoved');
   } catch (err) {
-    console.log("Error rejecting host: ", err);
+    console.log("Error rejecting/deleting host: ", err);
     res.redirect('/admin/manage-hosts');
   }
 };
-
-// एक साथ सारी पेंडिंग रिक्वेस्ट को क्लियर करने के लिए
+``
 exports.postClearAllHosts = async (req, res, next) => {
   if (!req.session.isLoggedIn || req.session.user.email !== 'dakshchaudhary10009@gmail.com') {
     return res.redirect('/');

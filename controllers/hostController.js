@@ -17,7 +17,7 @@ exports.getAddHome = (req, res, next) => {
   });
 };
 
-// 1. Host List Page: Sirf logged-in host ke hi homes dikhenge
+// Host List Page: Sirf logged-in host ke hi homes dikhenge
 exports.getHostHomes = (req, res, next) => {
   const hostId = req.session.user ? req.session.user._id : null;
 
@@ -36,7 +36,7 @@ exports.getHostHomes = (req, res, next) => {
     });
 };
 
-// 2. Get Edit Home: Check karega ki yeh home isi host ka hai ya nahi
+// Get Edit Home: Check karega ki yeh home isi host ka hai ya nahi
 exports.getEditHome = (req, res, next) => {
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
@@ -63,7 +63,7 @@ exports.getEditHome = (req, res, next) => {
     });
 };
 
-// 3. Post Add Home
+// Post Add Home
 exports.postAddHome = async (req, res, next) => {
   try {
     const { houseName, price, location, rating, description,hostPhone } = req.body;
@@ -93,7 +93,7 @@ exports.postAddHome = async (req, res, next) => {
   }
 };
 
-// 4. Post Edit Home: Security Check ke saath
+// Post Edit Home: Security Check ke saath
 exports.postEditHome = async (req, res, next) => {
   try {
     const { id, houseName, price, location, rating, description, hostPhone } = req.body;
@@ -127,7 +127,7 @@ exports.postEditHome = async (req, res, next) => {
   }
 };
 
-// 5. Post Delete Home: Sirf apna home delete kar paayega
+// Post Delete Home: Sirf apna home delete kar paayega
 exports.postDeleteHome = async (req, res, next) => {
   const homeId = req.params.homeId;
   const hostId = req.session.user ? req.session.user._id : null;

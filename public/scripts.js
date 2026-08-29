@@ -87,6 +87,7 @@ function parseToastQuery() {
     hostAdded: ['Property created', 'Your listing is live and ready to book.'],
     hostUpdated: ['Property updated', 'Your home details were saved successfully.'],
     hostDeleted: ['Property removed', 'The home was deleted from your host dashboard.'],
+    adminHostRemoved: ['Host Removed', 'Host and their properties deleted permanently.'],
     loginSuccess: ['Welcome back!', 'You are now signed in.'],
     bookingSuccess: ['Booking confirmed', 'Your reservation has been created successfully.'],
     bookingCancelled: ['Booking cancelled', 'The reservation has been cancelled.'],
@@ -105,6 +106,7 @@ function parseToastQuery() {
     const redAlerts = [
       'favRemoved', 
       'hostDeleted', 
+      'adminHostRemoved',
       'bookingCancelled', 
       'bookingConflict', 
       'checkinPast', 
