@@ -30,12 +30,12 @@
     <form action="/login" method="POST" class="space-y-5">
       <%- include('../partials/errors') %>
       
-      <div class="field-group">
+      <div class="field-group mb-2">
         <label for="email">Email address</label>
         <input id="email" name="email" type="email" placeholder="you@example.com" value="<%= typeof oldInput !== 'undefined' && oldInput.email ? oldInput.email : '' %>" required />
       </div>
 
-      <div class="field-group">
+      <div class="field-group mb-2">
         <label for="password">Password</label>
         <input id="password" name="password" type="password" placeholder="Enter your password" required />
       </div>
@@ -44,7 +44,7 @@
     </form>
 
   
-    <div class="flex items-center justify-center gap-3 text-slate-400 my-6">
+    <div class="flex items-center justify-center gap-3 text-slate-400 my-6 mb-2">
       <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
       <span class="text-sm">or</span>
       <span class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></span>
