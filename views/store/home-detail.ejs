@@ -1,18 +1,16 @@
 <%- include('../partials/head') %>
 <%- include('../partials/nav') %>
-
-
 <main class="page-shell hd-wrapper">
   
-  <!-- Back Button -->
-  <div style="margin-bottom: 1.5rem;">
-    <a href="/homes" class="nav-button secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem;">
+ 
+  <div style="margin-bottom: 1.2rem;">
+    <a href="/homes" class="nav-button secondary" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem;">
       <i class="fas fa-arrow-left"></i> Back to homes
     </a>
   </div>
 
-  <!-- Hero Image -->
-  <div class="detail-hero-media" style="width: 100%; height: 700px; border-radius: 1.5rem; overflow: hidden; box-shadow: var(--card-shadow);">
+  
+  <div class="detail-hero-media">
     <img 
       src="<%= home.photoUrl || '/images/OIP4.jpg' %>" 
       alt="<%= home.houseName %>" 
@@ -20,34 +18,29 @@
     />
   </div>
 
-  <!-- Main Grid Layout -->
   <div class="hd-layout">
-    
-    <!-- 🏠 LEFT COLUMN (Details) -->
+  
     <div>
       
-      <!-- 🛠️ FIX 1: Removed badge-pill class to remove the map pin icon -->
       <span style="display: inline-block; background: var(--surface-strong); color: var(--muted); padding: 0.35rem 0.85rem; border-radius: 999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
         ✨ Premium stay
       </span>
       
       <h1 class="hd-title"><%= home.houseName %></h1>
       
-      <!-- 🛠️ FIX 2: Added margin-right instead of gap so they never stick together -->
-      <div style="display: flex; align-items: center; flex-wrap: wrap;">
-        <span class="status-badge status-available" style="margin-right: 1.2rem; padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+      <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <span class="status-badge status-available" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
           Booking available
         </span>
         <span class="status-badge" style="background: var(--accent-soft); color: var(--accent-strong); padding: 0.4rem 0.8rem; font-size: 0.8rem;">
-          <i class="fas fa-star" style="margin-right: 0.3rem;"></i> <%= home.rating %>
+          <i class="fas fa-star"></i> <%= home.rating %>
         </span>
       </div>
 
-      <!-- Info Grid (Location, Price, Host) -->
+      <!-- Info Grid -->
       <div class="hd-info-grid">
         <div>
           <span class="hd-label">Location</span>
-          <!-- 🛠️ FIX 3: Icon alignment fixed for multi-line address -->
           <span class="hd-value"><i class="fas fa-map-marker-alt text-accent" style="margin-top: 0.25rem;"></i> <%= home.location %></span>
         </div>
         <div>
@@ -62,31 +55,31 @@
 
       <!-- Description -->
       <div style="margin-bottom: 2rem;">
-        <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 1rem;">About this home</h2>
-        <p style="color: var(--muted); line-height: 1.8; font-size: 1.05rem;">
+        <h2 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 0.8rem;">About this home</h2>
+        <p style="color: var(--muted); line-height: 1.7; font-size: 1rem;">
           <%= home.description || 'A beautifully styled stay with premium amenities and a peaceful neighbourhood. Perfect for your next getaway.' %>
         </p>
       </div>
     </div>
 
-    <!-- 💳 RIGHT COLUMN (Booking Card) -->
+  
     <div style="position: relative;">
       <div class="hd-booking-card">
         
         <% if (isLoggedIn && user && user.userType === 'guest') { %>
           
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h3 style="font-size: 1.5rem; font-weight: 800; margin: 0;">Rs <%= home.price %> <span style="font-size: 1rem; font-weight: 500; color: var(--muted);">/ night</span></h3>
+            <h3 style="font-size: 1.4rem; font-weight: 800; margin: 0;">Rs <%= home.price %> <span style="font-size: 0.9rem; font-weight: 500; color: var(--muted);">/ night</span></h3>
             
             <form action="/favourites" method="POST" style="margin: 0;">
               <input type="hidden" name="id" value="<%= home._id %>" />
-              <button type="submit" class="heart-button" style="padding: 0.6rem; border-radius: 50%; width: 2.8rem; height: 2.8rem; border: 1px solid var(--border);">
+              <button type="submit" class="heart-button" style="padding: 0; border-radius: 50%; width: 2.5rem; height: 2.5rem; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
                 <i class="fas fa-heart heart-icon"></i>
               </button>
             </form>
           </div>
 
-          <!-- Unavailable Dates Warning -->
+      
           <% if (typeof bookings !== 'undefined' && bookings.length > 0) { %>
             <div style="background: var(--accent-soft); border: 1px solid rgba(255,56,92,0.2); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1.5rem;">
               <h4 style="color: var(--accent-strong); font-size: 0.9rem; font-weight: 700; margin: 0 0 0.5rem 0;">
@@ -104,28 +97,28 @@
             </div>
           <% } %>
 
-          <!-- Booking Form -->
+          
           <form action="/bookings" method="POST" id="booking-form">
             <input type="hidden" name="homeId" value="<%= home._id %>" />
 
-            <!-- Airbnb Style Inputs -->
+           
             <div class="hd-inputs-container">
               <div class="hd-input-box">
-                <label class="hd-label" style="font-size: 0.65rem;" for="check-in">Check-in</label>
+                <label class="hd-label" style="font-size: 0.6rem;" for="check-in">Check-in</label>
                 <input id="check-in" name="checkIn" type="date" class="hd-input-field" min="<%= new Date().toISOString().slice(0,10) %>" required />
               </div>
               <div class="hd-input-box">
-                <label class="hd-label" style="font-size: 0.65rem;" for="check-out">Check-out</label>
+                <label class="hd-label" style="font-size: 0.6rem;" for="check-out">Check-out</label>
                 <input id="check-out" name="checkOut" type="date" class="hd-input-field" required />
               </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; color: var(--muted); font-size: 0.95rem; margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: space-between; color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;">
               <span style="text-decoration: underline;">Total nights</span>
               <span id="nights-count" style="font-weight: 500;">0 nights</span>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; border-top: 1px solid var(--border); margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border); margin-bottom: 1.25rem;">
               <span style="font-weight: 600;">Total price</span>
               <span id="total-price" style="font-size: 1.2rem; font-weight: 800;">Rs 0</span>
             </div>
@@ -167,11 +160,11 @@
           </script>
 
         <% } else if (!isLoggedIn) { %>
-          <div style="text-align: center; padding: 1rem 0;">
-            <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">Ready to book?</h3>
-            <p style="color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Please log in as a guest to book this premium home.</p>
+          <div style="text-align: center; padding: 0.5rem 0;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem;">Ready to book?</h3>
+            <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1.25rem;">Please log in as a guest to book this premium home.</p>
             <a href="/login" class="btn-primary" style="display: block; width: 100%; text-decoration: none; margin-bottom: 1rem;">Log in to Book</a>
-            <p style="font-size: 0.9rem; color: var(--muted);">
+            <p style="font-size: 0.85rem; color: var(--muted);">
               Don't have an account? <a href="/signup" style="color: var(--accent-strong); font-weight: bold; text-decoration: underline;">Sign up</a>
             </p>
           </div>
