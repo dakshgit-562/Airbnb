@@ -1216,3 +1216,105 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     .pro-image-box { width: 100%; height: 220px; }
     .pro-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
   }
+
+
+  
+  .hd-wrapper {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  
+  .hd-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  /* Desktop Layout: 2 Columns */
+  @media (min-width: 850px) {
+    .hd-layout {
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 4rem;
+    }
+  }
+
+  /* Left Side Info Grid */
+  .hd-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+    margin: 1.75rem 0 2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hd-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.6rem;
+  }
+
+  .hd-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.4;
+  }
+
+  /* Right Side Sticky Booking Card */
+  .hd-booking-card {
+    position: sticky;
+    top: 100px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    padding: 1.75rem;
+    box-shadow: var(--card-shadow);
+  }
+
+  /* Airbnb Style Seamless Inputs */
+  .hd-inputs-container {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  
+  .hd-input-box {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+  }
+  
+  .hd-input-box:first-child {
+    border-right: 1px solid var(--border);
+  }
+
+  .hd-input-field {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+  }
+  
+  .hd-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 0.5rem 0 1.2rem 0;
+    color: var(--text);
+    line-height: 1.2;
+  }
